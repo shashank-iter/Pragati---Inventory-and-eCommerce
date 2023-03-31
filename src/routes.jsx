@@ -6,7 +6,7 @@ import {
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Tables, Notifications, Product } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -41,6 +41,12 @@ export const routes = [
         path: "/notifactions",
         element: <Notifications />,
       },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "product",
+        path: "/product",
+        element: <Product />,
+      }
     ],
   },
   {
