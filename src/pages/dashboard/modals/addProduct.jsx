@@ -13,7 +13,7 @@ import {
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 import { Product } from "..";
 
-export default function addProduct() {
+export default function AddProduct() {
   const [size, setSize] = useState(null);
 
   const handleOpen = (value) => setSize(value);
