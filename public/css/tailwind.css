@@ -1,12 +1,20 @@
 @tailwind base;
 @tailwind components;
 
-input[type=file]::file-selector-button {
-    @apply hidden
-}
+@layer base {
+  /* Hiding the default file upload button. */
+  input[type="file"]::file-selector-button {
+    @apply hidden;
+  }
+  input[type="file"]::-webkit-file-upload-button {
+    @apply hidden;
+  }
 
-input[type=file]::-webkit-file-upload-button {
-    @apply hidden
+  /* Hiding the default inner-button for 'number' type input. */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    display: none;
+  }
 }
 
 @tailwind utilities;

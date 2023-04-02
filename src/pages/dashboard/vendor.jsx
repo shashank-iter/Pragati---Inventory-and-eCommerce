@@ -15,8 +15,8 @@ import {
   PencilSquareIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
-// import { authorsTableData, projectsTableData } from "@/data";
 import { faker } from "@faker-js/faker";
+import AddVendor from "./modals/addVendor";
 
 const vendorTableHeaders = ["vendor name", "Company Name", "Email", "payments"];
 
@@ -67,7 +67,8 @@ const Vendor = () => {
               Vendors
             </Typography>
           </div>
-          <div className="flex  w-1/2 items-center justify-end">
+          <div className="flex w-1/2 items-center justify-end gap-2">
+            <AddVendor/>
             {/* settings button */}
             <Cog6ToothIcon
               type="button"
