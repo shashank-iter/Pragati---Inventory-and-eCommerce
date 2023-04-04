@@ -127,11 +127,10 @@ export default function AddProduct() {
                 <Input className="" size="md" label="Reorder Point" />
               </div>
               <div className=" mb-6 flex flex-col gap-4 md:w-1/2">
-              <Select label="Vendor" className="flex-col ">
-                  
-                  <Option >Chindi Baniya</Option>
-                  <Option >Samosa Chor</Option>
-                  <Option >Pani Doodhwala</Option>
+                <Select label="Vendor" className="flex-col ">
+                  <Option>Chindi Baniya</Option>
+                  <Option>Samosa Chor</Option>
+                  <Option>Pani Doodhwala</Option>
                 </Select>
               </div>
             </div>

@@ -5,9 +5,16 @@ import {
   BellIcon,
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
-  BanknotesIcon
+  BanknotesIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications, Product, Vendor } from "@/pages/dashboard";
+import {
+  Home,
+  Profile,
+  Tables,
+  Notifications,
+  Product,
+  Vendor,
+} from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -52,7 +59,7 @@ export const routes = [
         icon: <BanknotesIcon {...icon} />,
         name: "vendor",
         path: "/vendor",
-        element: <Vendor/>,
+        element: <Vendor />,
       },
     ],
   },

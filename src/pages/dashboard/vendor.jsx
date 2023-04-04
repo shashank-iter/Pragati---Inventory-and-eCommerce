@@ -68,7 +68,7 @@ const Vendor = () => {
             </Typography>
           </div>
           <div className="flex w-1/2 items-center justify-end gap-2">
-            <AddVendor/>
+            <AddVendor />
             {/* settings button */}
             <Cog6ToothIcon
               type="button"
@@ -102,9 +102,7 @@ const Vendor = () => {
               {vendorsData.map(
                 ({ vendorName, companyName, email, payments }, key, arr) => {
                   const tdClasses = `py-3 px-5 ${
-                    key === arr.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
+                    key === arr.length - 1 ? "" : "border-b border-blue-gray-50"
                   }`;
 
                   return (
@@ -130,11 +128,11 @@ const Vendor = () => {
                       </td>
                       <td className={tdClasses}>
                         {payments ? (
-                          <span className="bg-green-400 rounded-md block w-12 text-center py-1.5 px-2 text-white">
+                          <span className="block w-12 rounded-md bg-green-400 py-1.5 px-2 text-center text-white">
                             Paid
                           </span>
                         ) : (
-                          <span className="bg-red-400 rounded-md block w-12 text-center py-1.5 px-2 text-white">
+                          <span className="block w-12 rounded-md bg-red-400 py-1.5 px-2 text-center text-white">
                             Due
                           </span>
                         )}
