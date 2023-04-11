@@ -6,6 +6,7 @@ import {
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
   BanknotesIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/solid";
 import {
   Home,
@@ -14,6 +15,9 @@ import {
   Notifications,
   Product,
   Vendor,
+  Invoices,
+  Orders,
+  PaymentReceived,
 } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 
@@ -60,6 +64,24 @@ export const routes = [
         name: "vendor",
         path: "/vendor",
         element: <Vendor />,
+      },
+      {
+        icon: <DocumentTextIcon {...icon} />,
+        name: "invoices",
+        path: "/invoices",
+        element: <Invoices />,
+      },
+      {
+        icon: <DocumentTextIcon {...icon} />,
+        name: "orders",
+        path: "/orders",
+        element: <Orders />,
+      },
+      {
+        icon: <DocumentTextIcon {...icon} />,
+        name: "payment Received",
+        path: "/payment received",
+        element: <PaymentReceived />,
       },
     ],
   },
