@@ -7,6 +7,8 @@ import {
   UserPlusIcon,
   BanknotesIcon,
   DocumentTextIcon,
+  ClipboardDocumentListIcon,
+  InboxArrowDownIcon,
 } from "@heroicons/react/24/solid";
 import {
   Home,
@@ -72,13 +74,13 @@ export const routes = [
         element: <Invoices />,
       },
       {
-        icon: <DocumentTextIcon {...icon} />,
+        icon: <ClipboardDocumentListIcon {...icon} />,
         name: "orders",
         path: "/orders",
         element: <Orders />,
       },
       {
-        icon: <DocumentTextIcon {...icon} />,
+        icon: <InboxArrowDownIcon {...icon} />,
         name: "payment Received",
         path: "/payment received",
         element: <PaymentReceived />,
