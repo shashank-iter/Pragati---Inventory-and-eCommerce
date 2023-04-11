@@ -50,7 +50,7 @@ export default function AddVendor() {
           onClick={() => handleOpen("xxl")}
           variant="gradient"
           color="white"
-          class="bg-black text-sm sm:text-base"
+          className="bg-black text-sm sm:text-base"
         >
           Add Vendor +
         </Button>
