@@ -133,7 +133,7 @@ export default function AddVendor() {
               {" "}
               Contact Person Information
             </Typography>
-            <table className="mb-4 w-full min-w-[640px] table-auto">
+            <table className="mb-4 w-full min-w-[640px] table-auto border-collapse">
               {/* table header */}
               <thead>
                 <tr>
@@ -188,28 +188,28 @@ export default function AddVendor() {
                 {[1, 2].map((row) => (
                   // Set the key of the row to the current element being mapped over
                   <tr key={row} className="">
-                    <td>
+                    <td className=" border border-gray-300">
                       {/* Create an input field for text */}
                       <input
-                        className="w-full border border-gray-300 text-gray-900 focus-visible:outline-none focus-visible:ring-1"
+                        className="w-full text-gray-900 focus-visible:outline-none focus-visible:ring-1"
                         type="text"
                         name=""
                         id=""
                       />
                     </td>
-                    <td>
+                    <td className=" border border-gray-300">
                       {/* Create an input field for numbers */}
                       <input
-                        className="w-full border border-gray-300 text-gray-900 focus-visible:outline-none focus-visible:ring-1"
+                        className="w-full text-gray-900 focus-visible:outline-none focus-visible:ring-1"
                         type="number"
                         name=""
                         id=""
                       />
                     </td>
-                    <td>
+                    <td className=" border border-gray-300">
                       {/* Create an input field for email addresses */}
                       <input
-                        className="w-full border border-gray-300 text-gray-900 focus-visible:outline-none focus-visible:ring-1"
+                        className="w-full text-gray-900 focus-visible:outline-none focus-visible:ring-1"
                         type="email"
                         name=""
                         id=""
