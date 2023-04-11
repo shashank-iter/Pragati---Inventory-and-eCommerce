@@ -133,14 +133,14 @@ export default function AddVendor() {
               {" "}
               Contact Person Information
             </Typography>
-            <table className="w-full min-w-[640px] table-auto">
+            <table className="mb-4 w-full min-w-[640px] table-auto">
               {/* table header */}
               <thead>
                 <tr>
                   {["name", "Contact No.", "email"].map((title) => (
                     <th
                       key={title}
-                      className="border-b border-blue-gray-50 py-3 px-5 text-left"
+                      className="border-b border-blue-gray-50 bg-gray-200 py-3 px-5 text-left"
                     >
                       <Typography
                         variant="small"
@@ -155,7 +155,7 @@ export default function AddVendor() {
 
               {/* table body */}
               <tbody>
-                {contactData.map(({ name, phone, email }, key, arr) => {
+                {/* {contactData.map(({ name, phone, email }, key, arr) => {
                   const tdClasses = `py-3 px-5 ${
                     key === arr.length - 1 ? "" : "border-b border-blue-gray-50"
                   }`;
@@ -182,7 +182,41 @@ export default function AddVendor() {
                       </td>
                     </tr>
                   );
-                })}
+                })} */}
+
+                {/* Map over an array of two elements [1, 2] and return a table row for each element */}
+                {[1, 2].map((row) => (
+                  // Set the key of the row to the current element being mapped over
+                  <tr key={row} className="">
+                    <td>
+                      {/* Create an input field for text */}
+                      <input
+                        className="w-full border border-gray-300 text-gray-900 focus-visible:outline-none focus-visible:ring-1"
+                        type="text"
+                        name=""
+                        id=""
+                      />
+                    </td>
+                    <td>
+                      {/* Create an input field for numbers */}
+                      <input
+                        className="w-full border border-gray-300 text-gray-900 focus-visible:outline-none focus-visible:ring-1"
+                        type="number"
+                        name=""
+                        id=""
+                      />
+                    </td>
+                    <td>
+                      {/* Create an input field for email addresses */}
+                      <input
+                        className="w-full border border-gray-300 text-gray-900 focus-visible:outline-none focus-visible:ring-1"
+                        type="email"
+                        name=""
+                        id=""
+                      />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             {/* Table to have info of contact persons end */}
