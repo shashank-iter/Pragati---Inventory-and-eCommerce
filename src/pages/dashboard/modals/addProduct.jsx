@@ -25,7 +25,7 @@ export default function AddProduct() {
           onClick={() => handleOpen("xxl")}
           variant="gradient"
           color="white"
-          className="bg-black text-sm sm:text-base"
+          className="bg-white text-sm sm:text-base"
         >
           Add Product +
         </Button>
