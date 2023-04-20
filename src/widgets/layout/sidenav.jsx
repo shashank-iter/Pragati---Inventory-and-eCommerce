@@ -22,7 +22,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
     <aside
       className={`${sidenavTypes[sidenavType]} ${
         openSidenav ? "translate-x-0" : "-translate-x-80"
-      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 overflow-y-scroll rounded-xl transition-transform duration-300 xl:translate-x-0`}
+      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 overflow-y-scroll rounded-xl transition-transform duration-300 scrollbar-thin scrollbar-track-blue-gray-300 scrollbar-thumb-blue-gray-700 xl:translate-x-0`}
     >
       <div
         className={`relative border-b ${
