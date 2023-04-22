@@ -9,8 +9,34 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import supabase from "./supabaseClient";
+import { useState } from "react";
 
 export function SignIn() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+      alert(data.user.role);
+      console.log(data, error);
+    } catch (error) {
+      alert(error.error_description || error.message);
+    }
+  };
+  const handleChange = (e) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value,
+    }));
+  };
   return (
     <>
       <img
@@ -30,14 +56,26 @@ export function SignIn() {
             </Typography>
           </CardHeader>
           <CardBody className="flex flex-col gap-4">
-            <Input type="email" label="Email" size="lg" />
-            <Input type="password" label="Password" size="lg" />
+            <Input
+              type="email"
+              label="Email"
+              name="email"
+              onChange={handleChange}
+              size="lg"
+            />
+            <Input
+              type="password"
+              label="Password"
+              name="password"
+              onChange={handleChange}
+              size="lg"
+            />
             <div className="-ml-2.5">
               <Checkbox label="Remember Me" />
             </div>
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" fullWidth>
+            <Button variant="gradient" fullWidth onClick={handleSignIn}>
               Sign In
             </Button>
             <Typography variant="small" className="mt-6 flex justify-center">
