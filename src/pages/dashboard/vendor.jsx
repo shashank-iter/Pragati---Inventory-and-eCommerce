@@ -8,6 +8,11 @@ import {
   Tooltip,
   Progress,
   Button,
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
 } from "@material-tailwind/react";
 import {
   EllipsisVerticalIcon,
@@ -15,45 +20,65 @@ import {
   PencilSquareIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
-import { faker } from "@faker-js/faker";
 import AddVendor from "./modals/addVendor";
 
-const vendorTableHeaders = ["vendor name", "Company Name", "Email", "payments"];
+import { paymentsData, vendorsData, ordersData } from "@/data";
+import { PaymentsTable } from "@/components/vendorPage/PaymentsTable";
+import { VendorTable } from "@/components/vendorPage/VendorTable";
+import { OrdersTable } from "@/components/vendorPage/OrdersTable";
 
-const vendorsData = [
-  {
-    vendorName: faker.name.fullName(),
-    companyName: faker.company.name(),
-    email: faker.internet.email(),
-    payments: faker.datatype.boolean(),
-  },
-  {
-    vendorName: faker.name.fullName(),
-    companyName: faker.company.name(),
-    email: faker.internet.email(),
-    payments: faker.datatype.boolean(),
-  },
-  {
-    vendorName: faker.name.fullName(),
-    companyName: faker.company.name(),
-    email: faker.internet.email(),
-    payments: faker.datatype.boolean(),
-  },
-  {
-    vendorName: faker.name.fullName(),
-    companyName: faker.company.name(),
-    email: faker.internet.email(),
-    payments: faker.datatype.boolean(),
-  },
-  {
-    vendorName: faker.name.fullName(),
-    companyName: faker.company.name(),
-    email: faker.internet.email(),
-    payments: faker.datatype.boolean(),
-  },
-];
-
+/**
+ * Component that renders the Vendor page with three tabs displaying vendor, payments and orders data.
+ * @returns {JSX.Element} The rendered component.
+ */
 const Vendor = () => {
+  // Data for tabs
+  const tabsData = [
+    {
+      label: "Vendors",
+      value: "vendors",
+      // Vendor table component
+      desc: (
+        <VendorTable
+          headers={["vendor name", "Company Name", "Email", "payments"]}
+          data={vendorsData}
+        />
+      ),
+    },
+    {
+      label: "Payments",
+      value: "payments",
+      // Payments table component
+      desc: (
+        <PaymentsTable
+          headers={["Vendor name", "payments made", "Due Payments"]}
+          data={paymentsData}
+        />
+      ),
+    },
+    {
+      label: "Orders",
+      value: "orders",
+      // Orders table component
+      desc: (
+        <OrdersTable
+          headers={[
+            "Order No",
+            "Order Date",
+            "Quantity",
+            "Expected Delivery Date",
+            "Order Value",
+            "Advance Paid",
+            "Due Payment",
+            "Order Status",
+            "Payment Due Date",
+          ]}
+          data={ordersData}
+        />
+      ),
+    },
+  ];
+
   return (
     <div className="mt-12">
       <Card>
@@ -77,72 +102,23 @@ const Vendor = () => {
           </div>
         </CardHeader>
         <CardBody className="overflow-x-auto px-0 pt-0 pb-2">
-          <table className="w-full min-w-[640px] table-auto">
-            {/* table headers */}
-            <thead>
-              <tr>
-                {vendorTableHeaders.map((title) => (
-                  <th
-                    key={title}
-                    className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                  >
-                    <Typography
-                      variant="small"
-                      className="text-[11px] font-bold uppercase text-blue-gray-400"
-                    >
-                      {title}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            {/* table body */}
-            <tbody>
-              {vendorsData.map(
-                ({ vendorName, companyName, email, payments }, key, arr) => {
-                  const tdClasses = `py-3 px-5 ${
-                    key === arr.length - 1 ? "" : "border-b border-blue-gray-50"
-                  }`;
-
-                  return (
-                    <tr key={key}>
-                      <td className={tdClasses}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-medium"
-                        >
-                          {vendorName}
-                        </Typography>
-                      </td>
-                      <td className={tdClasses}>
-                        <Typography className={`text-sm font-medium`}>
-                          {companyName}
-                        </Typography>
-                      </td>
-                      <td className={tdClasses}>
-                        <Typography className="text-sm font-medium">
-                          {email}
-                        </Typography>
-                      </td>
-                      <td className={tdClasses}>
-                        {payments ? (
-                          <span className="block w-12 rounded-md bg-green-400 py-1.5 px-2 text-center text-white">
-                            Paid
-                          </span>
-                        ) : (
-                          <span className="block w-12 rounded-md bg-red-400 py-1.5 px-2 text-center text-white">
-                            Due
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                }
-              )}
-            </tbody>
-          </table>
+          {/* 'value' is NECESSARY for "Tabs" component, as it chooses the default/initial tab otherwise, it'll show blank */}
+          <Tabs value="vendors">
+            <TabsHeader className="bg-gray-400">
+              {tabsData.map(({ label, value }) => (
+                <Tab key={value} value={value}>
+                  {label}
+                </Tab>
+              ))}
+            </TabsHeader>
+            <TabsBody>
+              {tabsData.map(({ value, desc }) => (
+                <TabPanel value={value} className="overflow-x-auto" key={value}>
+                  {desc}
+                </TabPanel>
+              ))}
+            </TabsBody>
+          </Tabs>
         </CardBody>
       </Card>
     </div>
