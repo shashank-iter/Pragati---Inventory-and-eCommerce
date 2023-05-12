@@ -37,6 +37,7 @@ export function SignIn() {
       // console.log(data.user.role);
       // console.log(data.session.access_token);
       Cookies.set("token", data.session.access_token);
+      Cookies.set("uid", data.user.id);
       Cookies.set("email", data.user.email);
       if (Cookies.get("token")) {
         window.location.href = "/dashboard/home";
