@@ -183,6 +183,7 @@ export default function AddProduct() {
                   label="CGST"
                   className="flex-col"
                   name="cgst"
+                  disabled={taxType === "nonTaxable"}
                   onChange={(value) => handleSelectChange("cgst", value)}
                 >
                   <Option defaultChecked value="5">
@@ -200,6 +201,7 @@ export default function AddProduct() {
                   className="flex-col"
                   name="sgst"
                   onChange={(value) => handleSelectChange("sgst", value)}
+                  disabled={taxType === "nonTaxable"}
                 >
                   <Option defaultChecked value="5">
                     5%
