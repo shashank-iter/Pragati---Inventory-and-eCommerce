@@ -1,3 +1,5 @@
+import React, { useEffect } from "react";
+import Cookies from "js-cookie";
 import {
   Card,
   CardHeader,
@@ -32,6 +34,11 @@ import { OrdersTable } from "@/components/vendorPage/OrdersTable";
  * @returns {JSX.Element} The rendered component.
  */
 const Vendor = () => {
+  useEffect(() => {
+    if (!Cookies.get("token")) {
+      window.location.href = "/auth/sign-in";
+    }
+  });
   // Data for tabs
   const tabsData = [
     {

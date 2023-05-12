@@ -10,8 +10,9 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import supabase from "./supabaseClient";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import Cookies from "js-cookie";
 export function SignIn() {
   // Initializing formData state with email and password fields
   const [formData, setFormData] = useState({
@@ -28,12 +29,20 @@ export function SignIn() {
         email: formData.email,
         password: formData.password,
       });
+
+      // Cookies.set('name', 'fhff')
       // Alerting the user's role
-      alert(data.user.role);
+      // alert(data.user.role);
       console.log(data, error);
+      // console.log(data.user.role);
+      // console.log(data.session.access_token);
+      Cookies.set("token", data.session.access_token);
+
+      if (Cookies.get("token")) {
+        window.location.href = "/dashboard/home";
+      }
     } catch (error) {
-      // Alerting the error message
-      alert(error.error_description || error.message);
+      alert("Wrong Email or Password!");
     }
   };
   // Function to handle changes in form input fields
@@ -45,7 +54,6 @@ export function SignIn() {
   };
   return (
     <>
-      {/* Background image */}
       <img
         src="https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80"
         className="absolute inset-0 z-0 h-full w-full object-cover"

@@ -19,8 +19,15 @@ import {
 import { authorsTableData, projectsTableData } from "@/data";
 import AddProduct from "./modals/addProduct";
 import ChangeProduct from "./modals/changeProduct";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 const Invoices = () => {
+  useEffect(() => {
+    if (!Cookies.get("token")) {
+      window.location.href = "/auth/sign-in";
+    }
+  });
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>

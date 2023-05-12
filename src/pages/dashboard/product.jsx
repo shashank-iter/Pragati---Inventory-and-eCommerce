@@ -18,8 +18,15 @@ import {
 import { authorsTableData, projectsTableData } from "@/data";
 import AddProduct from "./modals/addProduct";
 import ChangeProduct from "./modals/changeProduct";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 export function Product() {
+  useEffect(() => {
+    if (!Cookies.get("token")) {
+      window.location.href = "/auth/sign-in";
+    }
+  });
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
@@ -102,6 +109,9 @@ export function Product() {
                         <Typography className="text-sm font-semibold">
                           {reorderLevel}
                         </Typography>
+                      </td>
+                      <td className={className}>
+                        <button>edit</button>
                       </td>
                       {/* <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">

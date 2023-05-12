@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Cookies from "js-cookie";
 
 const PaymentReceived = () => {
+  useEffect(() => {
+    if (!Cookies.get("token")) {
+      window.location.href = "/auth/sign-in";
+    }
+  });
   return <div>Payment Received</div>;
 };
 
