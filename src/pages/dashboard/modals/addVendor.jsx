@@ -37,6 +37,12 @@ const contactData = [
 
 export default function AddVendor() {
   const [size, setSize] = useState(null);
+  const [taxPreference, setTaxPreference] = useState(null);
+
+  const handleTaxPreferenceChange = (value) => {
+    console.log(value);
+    setTaxPreference(value);
+  };
 
   const handleOpen = (value) => setSize(value);
 
@@ -96,9 +102,13 @@ export default function AddVendor() {
                   label="Contact Number"
                 />
                 {/* Tax Preference */}
-                <Select label="Tax Preference">
-                  <Option>Taxable</Option>
-                  <Option>Non-Taxable</Option>
+                <Select
+                  label="Tax Preference"
+                  value={taxPreference}
+                  onChange={handleTaxPreferenceChange}
+                >
+                  <Option value="Taxable">Taxable</Option>
+                  <Option value="Non-Taxable">Non-Taxable</Option>
                 </Select>
               </div>
             </div>

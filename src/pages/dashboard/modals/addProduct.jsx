@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -12,11 +12,83 @@ import {
 } from "@material-tailwind/react";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 import { Product } from "..";
+import supabase from "@/pages/auth/supabaseClient";
+import Cookies from "js-cookie";
 
 export default function AddProduct() {
   const [size, setSize] = useState(null);
 
   const handleOpen = (value) => setSize(value);
+
+  const [formData, setFormData] = useState({
+    productName: "",
+    // productType: "",
+    // taxType: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  const [productType, setProductType] = useState(null);
+  const [taxType, setTaxType] = useState(null);
+  const [cgst, setCgst] = useState(null);
+  const [sgst, setSgst] = useState(null);
+  const [vendor, setVendor] = useState(null);
+
+  const dataToBeSent = {
+    productName: formData.productName,
+    productType: productType,
+
+    taxType: taxType,
+    cgst: cgst,
+    sgst: sgst,
+    vendor: vendor,
+  };
+
+  const handleSelectChange = (name, value) => {
+    console.log(name, value);
+    switch (name) {
+      case "productType":
+        setProductType(value);
+        break;
+      case "taxType":
+        setTaxType(value);
+        break;
+      case "cgst":
+        setCgst(value);
+        break;
+      case "sgst":
+        setSgst(value);
+        break;
+      case "vendor":
+        setVendor(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data, error } = await supabase
+        .from("product_table")
+        .insert([{ email: Cookies.get("email"), product_info: dataToBeSent }]);
+      console.log(Cookies.get("email"));
+      console.log(data);
+      console.log("chal ra hai");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <Fragment>
@@ -40,7 +112,13 @@ export default function AddProduct() {
             </Typography>
             <div className=" my-2 flex w-full flex-col justify-start gap-x-2 md:flex-row md:gap-x-4 ">
               <div className="mb-4 flex  flex-col gap-4 md:w-1/2">
-                <Input className="" size="md" label="Product Name" />
+                <Input
+                  className=""
+                  size="md"
+                  label="Product Name"
+                  name="productName"
+                  onChange={handleChange}
+                />
                 <Input
                   className="cursor-pointer"
                   size="md"
@@ -50,13 +128,26 @@ export default function AddProduct() {
                 />
               </div>
               <div className=" mb-2 flex flex-col gap-4 md:w-1/2">
-                <Select label="Choose Product Type" className="flex-col ">
-                  <Option>Goods</Option>
-                  <Option>Service</Option>
+                <Select
+                  label="Choose Product Type"
+                  className="flex-col"
+                  value={productType}
+                  name="productType"
+                  onChange={(value) => handleSelectChange("productType", value)}
+                >
+                  <Option value="goods">Goods</Option>
+                  <Option value="service">Service</Option>
                 </Select>
-                <Select label="Choose Tax Type" className="flex-col ">
-                  <Option>Taxable</Option>
-                  <Option>Non-Taxable</Option>
+
+                <Select
+                  label="Choose Tax Type"
+                  className="flex-col"
+                  value={taxType}
+                  name="taxType"
+                  onChange={(value) => handleSelectChange("taxType", value)}
+                >
+                  <Option value="taxable">Taxable</Option>
+                  <Option value="nonTaxable">Non-Taxable</Option>
                 </Select>
               </div>
             </div>
@@ -66,23 +157,35 @@ export default function AddProduct() {
             </Typography>
             <div className=" my-2 flex w-full flex-col justify-start gap-x-2 md:flex-row md:gap-x-4 ">
               <div className="mb-4 flex  flex-col gap-4 md:w-1/2">
-                <Select label="CGST" className="flex-col ">
+                <Select
+                  value={cgst}
+                  label="CGST"
+                  className="flex-col"
+                  name="cgst"
+                  onChange={(value) => handleSelectChange("cgst", value)}
+                >
                   <Option defaultChecked value="5">
                     5%
                   </Option>
                   <Option value="12">12%</Option>
                   <Option value="18">18%</Option>
-                  <Option value="18">28%</Option>
+                  <Option value="28">28%</Option>
                 </Select>
               </div>
               <div className=" mb-2 flex flex-col gap-4 md:w-1/2">
-                <Select label="SGST" className="flex-col ">
+                <Select
+                  value={sgst}
+                  label="SGST"
+                  className="flex-col"
+                  name="sgst"
+                  onChange={(value) => handleSelectChange("sgst", value)}
+                >
                   <Option defaultChecked value="5">
                     5%
                   </Option>
                   <Option value="12">12%</Option>
                   <Option value="18">18%</Option>
-                  <Option value="18">28%</Option>
+                  <Option value="28">28%</Option>
                 </Select>
               </div>
             </div>
@@ -127,10 +230,15 @@ export default function AddProduct() {
                 <Input className="" size="md" label="Reorder Point" />
               </div>
               <div className=" mb-6 flex flex-col gap-4 md:w-1/2">
-                <Select label="Vendor" className="flex-col ">
-                  <Option>Chindi Baniya</Option>
-                  <Option>Samosa Chor</Option>
-                  <Option>Pani Doodhwala</Option>
+                <Select
+                  value={vendor}
+                  label="Vendor"
+                  className="flex-col"
+                  onChange={(value) => handleSelectChange("vendor", value)}
+                >
+                  <Option value="chindiBaniya">Chindi Baniya</Option>
+                  <Option value="samosaChor">Samosa Chor</Option>
+                  <Option value="paniDoodhwala">Pani Doodhwala</Option>
                 </Select>
               </div>
             </div>
@@ -145,12 +253,8 @@ export default function AddProduct() {
           >
             <span>Cancel</span>
           </Button>
-          <Button
-            variant="gradient"
-            color="green"
-            onClick={() => handleOpen(null)}
-          >
-            <span>Confirm</span>
+          <Button variant="gradient" color="green" onClick={handleSubmit}>
+            <span>Submit</span>
           </Button>
         </DialogFooter>
       </Dialog>
