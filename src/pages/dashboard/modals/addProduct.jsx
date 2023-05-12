@@ -11,7 +11,6 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
-import { Product } from "..";
 import supabase from "@/pages/auth/supabaseClient";
 import Cookies from "js-cookie";
 
@@ -22,6 +21,7 @@ export default function AddProduct() {
 
   const [formData, setFormData] = useState({
     productName: "",
+
     // productType: "",
     // taxType: "",
   });
@@ -46,11 +46,22 @@ export default function AddProduct() {
   const dataToBeSent = {
     productName: formData.productName,
     productType: productType,
-
     taxType: taxType,
     cgst: cgst,
     sgst: sgst,
     vendor: vendor,
+    dimensions: formData.dimensions,
+    manufacturer: formData.manufacturer,
+    ean: formData.ean,
+    mpn: formData.mpn,
+    brand: formData.brand,
+    isbn: formData.isbn,
+    weight: formData.weight,
+    upc: formData.upc,
+    sellingPrice: formData.sellingPrice,
+    description: formData.description,
+    costPrice: formData.costPrice,
+    reorderPoint: formData.reorderPoint,
   };
 
   const handleSelectChange = (name, value) => {
@@ -79,14 +90,24 @@ export default function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data, error } = await supabase
-        .from("product_table")
-        .insert([{ email: Cookies.get("email"), product_info: dataToBeSent }]);
-      console.log(Cookies.get("email"));
-      console.log(data);
-      console.log("chal ra hai");
+      const { data, error } = await supabase.from("product_table").insert([
+        {
+          email: Cookies.get("email"),
+          product_info: dataToBeSent,
+          user_id: Cookies.get("uid"),
+        },
+      ]);
+      // console.log(Cookies.get("email"));
+      // console.log(data);
+      // console.log(error);
+      // console.log("chal ra hai");
+      alert("Product added successfully");
     } catch (error) {
-      alert(error.message);
+      alert(
+        "Error occured while adding product. Please try again or contact support."
+      );
+    } finally {
+      () => handleOpen("null");
     }
   };
 
@@ -195,16 +216,64 @@ export default function AddProduct() {
             </Typography>
             <div className=" my-2 flex w-full flex-col justify-start gap-x-2 md:flex-row md:gap-x-4 ">
               <div className="mb-4 flex  flex-col gap-4 md:w-1/2">
-                <Input className="" size="md" label="Dimensions (LxBxH)" />
-                <Input className="" size="md" label="Manufacturer" />
-                <Input className="" size="md" label="EAN" />
-                <Input className="" size="md" label="MPN" />
+                <Input
+                  className=""
+                  size="md"
+                  label="Dimensions (LxBxH)"
+                  name="dimensions"
+                  onChange={handleChange}
+                />
+                <Input
+                  className=""
+                  size="md"
+                  label="Manufacturer"
+                  name="manufacturer"
+                  onChange={handleChange}
+                />
+                <Input
+                  className=""
+                  size="md"
+                  label="EAN"
+                  name="ean"
+                  onChange={handleChange}
+                />
+                <Input
+                  className=""
+                  size="md"
+                  label="MPN"
+                  name="mpn"
+                  onChange={handleChange}
+                />
               </div>
               <div className=" mb-2 flex flex-col gap-4 md:w-1/2">
-                <Input className="" size="md" label="Weight" />
-                <Input className="" size="md" label="Brand" />
-                <Input className="" size="md" label="ISBN" />
-                <Input className="" size="md" label="UPC" />
+                <Input
+                  className=""
+                  size="md"
+                  label="Brand"
+                  name="brand"
+                  onChange={handleChange}
+                />
+                <Input
+                  className=""
+                  size="md"
+                  label="ISBN"
+                  name="isbn"
+                  onChange={handleChange}
+                />
+                <Input
+                  className=""
+                  size="md"
+                  label="Weight"
+                  name="weight"
+                  onChange={handleChange}
+                />
+                <Input
+                  className=""
+                  size="md"
+                  label="UPC"
+                  name="upc"
+                  onChange={handleChange}
+                />
               </div>
             </div>
             <Typography className="mb-3 text-lg font-semibold">
@@ -213,11 +282,29 @@ export default function AddProduct() {
             </Typography>
             <div className=" my-2 flex w-full flex-col justify-start gap-x-2 md:flex-row md:gap-x-4 ">
               <div className="mb-4 flex  flex-col gap-4 md:w-1/2">
-                <Input className="" size="md" label="Selling Price" />
-                <Input className="" size="md" label="Description" />
+                <Input
+                  className=""
+                  size="md"
+                  label="Selling Price"
+                  name="sellingPrice"
+                  onChange={handleChange}
+                />
+                <Input
+                  className=""
+                  size="md"
+                  label="Description"
+                  name="description"
+                  onChange={handleChange}
+                />
               </div>
               <div className=" mb-2 flex flex-col gap-4 md:w-1/2">
-                <Input className="" size="md" label="Cost Price" />
+                <Input
+                  className=""
+                  size="md"
+                  label="Cost Price"
+                  name="costPrice"
+                  onChange={handleChange}
+                />
               </div>
             </div>
             <Typography className="mb-3 text-lg font-semibold">
@@ -226,8 +313,20 @@ export default function AddProduct() {
             </Typography>
             <div className=" my-2 flex w-full flex-col justify-start gap-x-2 md:flex-row md:gap-x-4 ">
               <div className="mb-4 flex  flex-col gap-4 md:w-1/2">
-                <Input className="" size="md" label="Opening Stock" />
-                <Input className="" size="md" label="Reorder Point" />
+                <Input
+                  className=""
+                  size="md"
+                  label="Opening Stock"
+                  name="openingStock"
+                  onChange={handleChange}
+                />
+                <Input
+                  className=""
+                  size="md"
+                  label="Reorder Point"
+                  name="reorderPoint"
+                  onChange={handleChange}
+                />
               </div>
               <div className=" mb-6 flex flex-col gap-4 md:w-1/2">
                 <Select
