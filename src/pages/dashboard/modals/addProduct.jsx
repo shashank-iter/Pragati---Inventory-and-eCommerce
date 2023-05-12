@@ -223,6 +223,7 @@ export default function AddProduct() {
                   size="md"
                   label="Dimensions (LxBxH)"
                   name="dimensions"
+                  disabled={productType === "service"}
                   onChange={handleChange}
                 />
                 <Input
@@ -230,6 +231,7 @@ export default function AddProduct() {
                   size="md"
                   label="Manufacturer"
                   name="manufacturer"
+                  disabled={productType === "service"}
                   onChange={handleChange}
                 />
                 <Input
@@ -237,6 +239,7 @@ export default function AddProduct() {
                   size="md"
                   label="EAN"
                   name="ean"
+                  disabled={productType === "service"}
                   onChange={handleChange}
                 />
                 <Input
@@ -244,6 +247,7 @@ export default function AddProduct() {
                   size="md"
                   label="MPN"
                   name="mpn"
+                  disabled={productType === "service"}
                   onChange={handleChange}
                 />
               </div>
@@ -260,6 +264,7 @@ export default function AddProduct() {
                   size="md"
                   label="ISBN"
                   name="isbn"
+                  disabled={productType === "service"}
                   onChange={handleChange}
                 />
                 <Input
@@ -267,6 +272,7 @@ export default function AddProduct() {
                   size="md"
                   label="Weight"
                   name="weight"
+                  disabled={productType === "service"}
                   onChange={handleChange}
                 />
                 <Input
@@ -274,6 +280,7 @@ export default function AddProduct() {
                   size="md"
                   label="UPC"
                   name="upc"
+                  disabled={productType === "service"}
                   onChange={handleChange}
                 />
               </div>
