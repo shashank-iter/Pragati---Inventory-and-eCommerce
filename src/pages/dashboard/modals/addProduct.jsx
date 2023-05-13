@@ -61,6 +61,7 @@ export default function AddProduct() {
     sellingPrice: formData.sellingPrice,
     description: formData.description,
     costPrice: formData.costPrice,
+    openingStock: formData.openingStock,
     reorderPoint: formData.reorderPoint,
   };
 
@@ -109,6 +110,7 @@ export default function AddProduct() {
       sellingPrice: "",
       description: "",
       costPrice: "",
+      openingStock: "",
       reorderPoint: "",
     });
   };
@@ -351,6 +353,7 @@ export default function AddProduct() {
                   label="Opening Stock"
                   name="openingStock"
                   onChange={handleChange}
+                  type="number"
                 />
                 <Input
                   className=""
