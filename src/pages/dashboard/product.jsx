@@ -20,13 +20,32 @@ import AddProduct from "./modals/addProduct";
 import ChangeProduct from "./modals/changeProduct";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import supabase from "../auth/supabaseClient";
+import { data } from "autoprefixer";
+import { useState } from "react";
+
+async function fetchData() {
+  try {
+    let { data: product_table, error } = await supabase
+      .from("product_table")
+      .select("*");
+    console.log(product_table);
+    productData = product_table;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export function Product() {
+  let productData = [];
+
   useEffect(() => {
     if (!Cookies.get("token")) {
       window.location.href = "/auth/sign-in";
     }
   });
+
+  fetchData();
 
   // const { email, password } = formData;
 
@@ -70,58 +89,59 @@ export function Product() {
               </tr>
             </thead>
             <tbody>
-              {authorsTableData.map(
-                ({ img, productName, unitsInStock, reorderLevel }, key) => {
-                  const className = `py-3 px-5 ${
-                    key === authorsTableData.length - 1
+              {productData.map((item, index) => {
+                const className = `py-3 px-5 ${key === productData.length - 1}
                       ? ""
                       : "border-b border-blue-gray-50"
                   }`;
 
-                  return (
-                    <tr key={productName}>
-                      <td className={className}>
-                        <div className="flex items-center gap-4">
-                          <Avatar src={img} alt={productName} size="sm" />
-                          <div>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-semibold"
-                            >
-                              {productName}
-                            </Typography>
-                            {/* <Typography className="text-xs font-normal text-blue-gray-500">
-                                {}
-                              </Typography> */}
-                          </div>
+                return (
+                  <tr
+                    key={item.id}
+                    onClick={() => alert(item.product_info.productName)}
+                  >
+                    <td>
+                      <div className="flex items-center gap-4">
+                        {/* <Avatar src={img} alt={item.product_info.productName} size="sm" /> */}
+                        <div>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            {}
+                          </Typography>
+                          <Typography className="text-xs font-normal text-blue-gray-500">
+                            {item.product_info.productName}
+                          </Typography>
                         </div>
-                      </td>
-                      <td className={className}>
-                        <Typography
-                          className={`text-sm font-semibold  ${
-                            unitsInStock <= 10
-                              ? "text-red-700"
-                              : "text-blue-gray-700"
-                          }`}
-                        >
-                          {unitsInStock}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-sm font-semibold">
-                          {reorderLevel}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <button>edit</button>
-                      </td>
-                      {/* <td className={className}>
+                      </div>
+                    </td>
+                    <td>
+                      <Typography
+                        className={`text-sm font-semibold  ${
+                          item.product_info.openingStock <= 10
+                            ? "text-red-700"
+                            : "text-blue-gray-700"
+                        }`}
+                      >
+                        {item.product_info.openingStock}
+                      </Typography>
+                    </td>
+                    <td>
+                      <Typography className="text-sm font-semibold">
+                        {item.product_info.productName}
+                      </Typography>
+                    </td>
+                    <td>
+                      <button>edit</button>
+                    </td>
+                    {/* <td >
                           <Typography className="text-xs font-semibold text-blue-gray-600">
                           <TrashIcon className="h-5 w-5 text-red-500" />
                           </Typography>
                         </td> */}
-                      {/* <td className={className}>
+                    {/* <td >
                           <Typography
                             as="a"
                             href="#"
@@ -130,16 +150,15 @@ export function Product() {
                             
                           </Typography>
                         </td> */}
-                    </tr>
-                  );
-                }
-              )}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </CardBody>
       </Card>
 
-      <Card>
+      {/* <Card>
         <CardHeader variant="gradient" color="blue" className="mb-8 p-6">
           <Typography variant="h6" color="white">
             Projects Table
@@ -166,8 +185,8 @@ export function Product() {
                 )}
               </tr>
             </thead>
-            <tbody>
-              {projectsTableData.map(
+            <tbody> */}
+      {/* {projectsTableData.map(
                 ({ img, name, members, budget, completion }, key) => {
                   const className = `py-3 px-5 ${
                     key === projectsTableData.length - 1
@@ -177,7 +196,7 @@ export function Product() {
 
                   return (
                     <tr key={name}>
-                      <td className={className}>
+                      <td >
                         <div className="flex items-center gap-4">
                           <Avatar src={img} alt={name} size="sm" />
                           <Typography
@@ -243,11 +262,11 @@ export function Product() {
                     </tr>
                   );
                 }
-              )}
-            </tbody>
+              )} */}
+      {/* </tbody>
           </table>
         </CardBody>
-      </Card>
+      </Card> */}
     </div>
   );
 }
