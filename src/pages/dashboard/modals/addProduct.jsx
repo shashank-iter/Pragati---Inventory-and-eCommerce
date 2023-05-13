@@ -87,6 +87,32 @@ export default function AddProduct() {
     }
   };
 
+  /**
+   * The function resets the form data by setting all input fields to empty strings.
+   */
+  const resetFormData = () => {
+    setFormData({
+      productName: "",
+      productType: "",
+      taxType: "",
+      cgst: "",
+      sgst: "",
+      vendor: "",
+      dimensions: "",
+      manufacturer: "",
+      ean: "",
+      mpn: "",
+      brand: "",
+      isbn: "",
+      weight: "",
+      upc: "",
+      sellingPrice: "",
+      description: "",
+      costPrice: "",
+      reorderPoint: "",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -97,17 +123,14 @@ export default function AddProduct() {
           user_id: Cookies.get("uid"),
         },
       ]);
-      // console.log(Cookies.get("email"));
-      // console.log(data);
-      // console.log(error);
-      // console.log("chal ra hai");
       alert("Product added successfully");
+      resetFormData(); // Reset the form data after the alert
     } catch (error) {
       alert(
         "Error occured while adding product. Please try again or contact support."
       );
     } finally {
-      () => handleOpen("null");
+      handleOpen(null);
     }
   };
 
