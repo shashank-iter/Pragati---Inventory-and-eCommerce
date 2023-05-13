@@ -29,25 +29,57 @@ async function fetchData() {
     let { data: product_table, error } = await supabase
       .from("product_table")
       .select("*");
-    console.log(product_table);
-    productData = product_table;
+
+    return product_table;
   } catch (error) {
     console.log(error);
   }
 }
 
 export function Product() {
-  let productData = [];
-
   useEffect(() => {
     if (!Cookies.get("token")) {
       window.location.href = "/auth/sign-in";
     }
   });
 
-  fetchData();
+  // state to store data of the product to show in the table
+  const [productData, setProductData] = useState([]);
 
-  // const { email, password } = formData;
+  // async function to fetch data
+  async function fetchData() {
+    try {
+      let { data: product_table, error } = await supabase
+        .from("product_table")
+        .select("*");
+
+      return product_table;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
+   * This is a React useEffect hook that fetches data asynchronously and updates state variables.
+   */
+  useEffect(() => {
+    // setIsLoading(true);
+    async function fetchProductData() {
+      const fetchedData = await fetchData();
+      console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
+      setProductData(fetchedData);
+
+      // map over the data print individual product data
+      productData.map((item, index) => {
+        // console.log(item.product_info);
+        console.log(item.product_info.productName);
+      });
+
+      // setIsLoading(false);
+    }
+
+    fetchProductData();
+  }, []);
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -71,53 +103,47 @@ export function Product() {
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["product name", "units (In Stock)", "Re-order level"].map(
-                  (el) => (
-                    <th
-                      key={el}
-                      className="border-b border-blue-gray-50 py-3 px-5 text-left"
+                {[
+                  "product name",
+                  "units (In Stock)",
+                  "Re-order level",
+                  "Edit",
+                  "Delete",
+                ].map((el) => (
+                  <th
+                    key={el}
+                    className="border-b border-b-blue-gray-100 py-3 px-5 text-left"
+                  >
+                    <Typography
+                      variant="small"
+                      className="text-[11px] font-bold uppercase text-blue-gray-400"
                     >
-                      <Typography
-                        variant="small"
-                        className="text-[11px] font-bold uppercase text-blue-gray-400"
-                      >
-                        {el}
-                      </Typography>
-                    </th>
-                  )
-                )}
+                      {el}
+                    </Typography>
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               {productData.map((item, index) => {
-                const className = `py-3 px-5 ${key === productData.length - 1}
-                      ? ""
-                      : "border-b border-blue-gray-50"
-                  }`;
+                const className = `py-3 px-5 `;
 
                 return (
                   <tr
                     key={item.id}
                     onClick={() => alert(item.product_info.productName)}
                   >
-                    <td>
+                    <td className="py-3 px-5 text-left">
                       <div className="flex items-center gap-4">
                         {/* <Avatar src={img} alt={item.product_info.productName} size="sm" /> */}
                         <div>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-semibold"
-                          >
-                            {}
-                          </Typography>
                           <Typography className="text-xs font-normal text-blue-gray-500">
                             {item.product_info.productName}
                           </Typography>
                         </div>
                       </div>
                     </td>
-                    <td>
+                    <td className="py-3 px-5 text-left">
                       <Typography
                         className={`text-sm font-semibold  ${
                           item.product_info.openingStock <= 10
@@ -128,28 +154,23 @@ export function Product() {
                         {item.product_info.openingStock}
                       </Typography>
                     </td>
-                    <td>
+                    <td className="py-3 px-5 text-left">
                       <Typography className="text-sm font-semibold">
                         {item.product_info.productName}
                       </Typography>
                     </td>
-                    <td>
-                      <button>edit</button>
+                    <td className="py-3 px-5 text-left">
+                      <button>
+                        <PencilSquareIcon className="h-5 w-5 text-blue-gray-500" />
+                      </button>
                     </td>
-                    {/* <td >
-                          <Typography className="text-xs font-semibold text-blue-gray-600">
+                    <td className="py-3 px-5 text-left">
+                      <Typography className="text-xs font-semibold text-blue-gray-600">
+                        <button>
                           <TrashIcon className="h-5 w-5 text-red-500" />
-                          </Typography>
-                        </td> */}
-                    {/* <td >
-                          <Typography
-                            as="a"
-                            href="#"
-                            className="text-xs font-semibold text-blue-gray-600"
-                          >
-                            
-                          </Typography>
-                        </td> */}
+                        </button>
+                      </Typography>
+                    </td>
                   </tr>
                 );
               })}
@@ -196,7 +217,9 @@ export function Product() {
 
                   return (
                     <tr key={name}>
-                      <td >
+                      <td
+                      className="py-3 px-5 text-left"
+                      >
                         <div className="flex items-center gap-4">
                           <Avatar src={img} alt={name} size="sm" />
                           <Typography
@@ -208,7 +231,9 @@ export function Product() {
                           </Typography>
                         </div>
                       </td>
-                      <td className={className}>
+                      <td
+                      className="py-3 px-5 text-left"
+                      className={className}>
                         {members.map(({ img, name }, key) => (
                           <Tooltip key={name} content={name}>
                             <Avatar
@@ -223,7 +248,9 @@ export function Product() {
                           </Tooltip>
                         ))}
                       </td>
-                      <td className={className}>
+                      <td
+                      className="py-3 px-5 text-left"
+                      className={className}>
                         <Typography
                           variant="small"
                           className="text-xs font-medium text-blue-gray-600"
@@ -231,7 +258,9 @@ export function Product() {
                           {budget}
                         </Typography>
                       </td>
-                      <td className={className}>
+                      <td
+                      className="py-3 px-5 text-left"
+                      className={className}>
                         <div className="w-10/12">
                           <Typography
                             variant="small"
@@ -247,7 +276,9 @@ export function Product() {
                           />
                         </div>
                       </td>
-                      <td className={className}>
+                      <td
+                      className="py-3 px-5 text-left"
+                      className={className}>
                         <Typography
                           as="a"
                           href="#"
