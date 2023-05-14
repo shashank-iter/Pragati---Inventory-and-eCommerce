@@ -18,13 +18,11 @@ import { MaterialTailwindControllerProvider } from "@/context";
 import "../public/css/tailwind.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider>
-        <MaterialTailwindControllerProvider>
-          <App />
-        </MaterialTailwindControllerProvider>
-      </ThemeProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <ThemeProvider>
+      <MaterialTailwindControllerProvider>
+        <App />
+      </MaterialTailwindControllerProvider>
+    </ThemeProvider>
+  </BrowserRouter>
 );
