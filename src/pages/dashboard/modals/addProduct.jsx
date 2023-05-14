@@ -13,6 +13,7 @@ import {
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 import supabase from "@/pages/auth/supabaseClient";
 import Cookies from "js-cookie";
+import swal from "sweetalert";
 
 export default function AddProduct() {
   const [size, setSize] = useState(null);
@@ -42,6 +43,7 @@ export default function AddProduct() {
   const [cgst, setCgst] = useState(null);
   const [sgst, setSgst] = useState(null);
   const [vendor, setVendor] = useState(null);
+  const [path, setPath] = useState(null);
 
   const dataToBeSent = {
     productName: formData.productName,
@@ -63,6 +65,7 @@ export default function AddProduct() {
     costPrice: formData.costPrice,
     openingStock: formData.openingStock,
     reorderPoint: formData.reorderPoint,
+    image_id: path,
   };
 
   const handleSelectChange = (name, value) => {
@@ -125,16 +128,39 @@ export default function AddProduct() {
           user_id: Cookies.get("uid"),
         },
       ]);
-      alert("Product added successfully");
+      swal({
+        title: "Product Added!",
+        text: "Product has been added successfully!",
+        icon: "success",
+        button: "OK",
+      });
       resetFormData(); // Reset the form data after the alert
     } catch (error) {
-      alert(
-        "Error occured while adding product. Please try again or contact support."
-      );
+      swal({
+        title: "Error!",
+        text: "There was some error in adding the product. Please try again or contact support.",
+        icon: "error",
+        button: "OK",
+      });
     } finally {
       handleOpen(null);
     }
   };
+  async function uploadImage(e) {
+    let file = e.target.files[0];
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `${fileName}`;
+    let { data, error } = await supabase.storage
+      .from("productImage")
+      .upload(Cookies.get("uid") + "/" + filePath, file);
+    if (error) {
+      swal(
+        "There was some error in uploading the image. Please try again or contact support."
+      );
+    }
+    setPath(data.path);
+  }
 
   return (
     <Fragment>
@@ -171,6 +197,7 @@ export default function AddProduct() {
                   label="Upload Product Image"
                   type="file"
                   icon={<ArrowUpTrayIcon />}
+                  onChange={uploadImage}
                 />
               </div>
               <div className=" mb-2 flex flex-col gap-4 md:w-1/2">

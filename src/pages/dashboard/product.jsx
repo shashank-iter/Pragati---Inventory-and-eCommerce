@@ -58,7 +58,7 @@ export function Product() {
       console.log(error);
     }
   }
-
+  let img;
   /**
    * This is a React useEffect hook that fetches data asynchronously and updates state variables.
    */
@@ -135,7 +135,14 @@ export function Product() {
                   >
                     <td className="py-3 px-5 text-left">
                       <div className="flex items-center gap-4">
-                        {/* <Avatar src={img} alt={item.product_info.productName} size="sm" /> */}
+                        <Avatar
+                          src={
+                            "https://oukyirdebfesftyvvuou.supabase.co/storage/v1/object/public/productImage/" +
+                            item.product_info.image_id
+                          }
+                          alt={item.product_info.productName}
+                          size="sm"
+                        />
                         <div>
                           <Typography className="text-xs font-normal text-blue-gray-500">
                             {item.product_info.productName}
