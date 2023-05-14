@@ -1,0 +1,4 @@
+## Errors that we faced
+- While using material tailwind `Select` element there was an error as its not the regular `select` element so we were not able to fetch its value and update in into the state to send it to database. We built another state for there select elements using AI.
+
+- There was an error that the data being fectched from the database through the fetch data function was coming Asynrochously and we were not able to map it due to delay, we tried using useState to fix this but this ended up in 13k api requests to the server in few muniutes, the we delecared another useEffect and fixed it using that. 
