@@ -49,6 +49,22 @@ export function Product() {
   }
 
   /**
+   * This is an async function that deletes a row from a Supabase table based on the provided ID.
+   */
+  async function deleteRowById(id) {
+    const { data, error } = await supabase
+      .from("product_table")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error deleting row:", error);
+    } else {
+      console.log("Row deleted successfully:", data);
+    }
+  }
+
+  /**
    * This is a React useEffect hook that fetches data asynchronously and updates state variables.
    */
   useEffect(() => {
@@ -57,11 +73,12 @@ export function Product() {
       const fetchedData = await fetchData();
       // console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
       setProductData(fetchedData);
+      console.log("🚀 ~ fetchProductData ~ fetchedData:");
 
       // map over the data print individual product data
-      productData.map((item, index) => {
-        // console.log(item.product_info.productName);
-      });
+      // productData.map((item, index) => {
+      //   // console.log(item.product_info.productName);
+      // });
 
       // setIsLoading(false);
     }
@@ -159,7 +176,7 @@ export function Product() {
                     </td>
                     <td className="py-3 px-5 text-left">
                       <Typography className="text-xs font-semibold text-blue-gray-600">
-                        <button>
+                        <button onClick={() => deleteRowById(item.id)}>
                           <TrashIcon className="h-5 w-5 text-red-500" />
                         </button>
                       </Typography>
