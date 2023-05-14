@@ -47,7 +47,7 @@ export function Product() {
       console.log(error);
     }
   }
-  let img;
+
   /**
    * This is a React useEffect hook that fetches data asynchronously and updates state variables.
    */
