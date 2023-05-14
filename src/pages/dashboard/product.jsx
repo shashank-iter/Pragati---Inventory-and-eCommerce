@@ -16,6 +16,7 @@ import {
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import { authorsTableData, projectsTableData } from "@/data";
+import EditProduct from "./modals/editProduct";
 import AddProduct from "./modals/addProduct";
 import ChangeProduct from "./modals/changeProduct";
 import { useEffect } from "react";
@@ -23,18 +24,6 @@ import Cookies from "js-cookie";
 import supabase from "../auth/supabaseClient";
 import { data } from "autoprefixer";
 import { useState } from "react";
-
-async function fetchData() {
-  try {
-    let { data: product_table, error } = await supabase
-      .from("product_table")
-      .select("*");
-
-    return product_table;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 export function Product() {
   useEffect(() => {
@@ -66,13 +55,12 @@ export function Product() {
     // setIsLoading(true);
     async function fetchProductData() {
       const fetchedData = await fetchData();
-      console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
+      // console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
       setProductData(fetchedData);
 
       // map over the data print individual product data
       productData.map((item, index) => {
-        // console.log(item.product_info);
-        console.log(item.product_info.productName);
+        // console.log(item.product_info.productName);
       });
 
       // setIsLoading(false);
@@ -131,7 +119,7 @@ export function Product() {
                 return (
                   <tr
                     key={item.id}
-                    onClick={() => alert(item.product_info.productName)}
+                    // onClick={() => alert(item.product_info.productName)}
                   >
                     <td className="py-3 px-5 text-left">
                       <div className="flex items-center gap-4">
@@ -167,9 +155,7 @@ export function Product() {
                       </Typography>
                     </td>
                     <td className="py-3 px-5 text-left">
-                      <button>
-                        <PencilSquareIcon className="h-5 w-5 text-blue-gray-500" />
-                      </button>
+                      <EditProduct productData={item} />
                     </td>
                     <td className="py-3 px-5 text-left">
                       <Typography className="text-xs font-semibold text-blue-gray-600">
