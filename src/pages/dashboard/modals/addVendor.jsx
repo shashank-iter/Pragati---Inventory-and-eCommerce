@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -7,45 +7,81 @@ import {
   DialogFooter,
   Input,
   Typography,
-  Select,
   Option,
 } from "@material-tailwind/react";
-import { faker } from "@faker-js/faker";
-
-const contactData = [
-  {
-    name: faker.name.fullName(),
-    phone: faker.phone.number(),
-    email: faker.internet.email(),
-  },
-  {
-    name: faker.name.fullName(),
-    phone: faker.phone.number(),
-    email: faker.internet.email(),
-  },
-  {
-    name: faker.name.fullName(),
-    phone: faker.phone.number(),
-    email: faker.internet.email(),
-  },
-  {
-    name: faker.name.fullName(),
-    phone: faker.phone.number(),
-    email: faker.internet.email(),
-  },
-];
+import Select from "react-select";
+import swal from "sweetalert";
+import { Country, State, City } from "country-state-city";
+import Cookies from "js-cookie";
+import supabase from "@/pages/auth/supabaseClient";
 
 export default function AddVendor() {
   const [size, setSize] = useState(null);
   const [taxPreference, setTaxPreference] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedState, setSelectedState] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
+  useEffect(() => {
+    console.log(selectedCountry);
+    console.log(selectedCountry?.isoCode);
+    console.log(State?.getStatesOfCountry(selectedCountry?.isoCode));
+  }, [selectedCountry]);
 
-  const handleTaxPreferenceChange = (value) => {
-    console.log(value);
-    setTaxPreference(value);
+  const handleChange = (e) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value,
+    }));
   };
-
   const handleOpen = (value) => setSize(value);
-
+  const [formData, setFormData] = useState({
+    productName: "",
+  });
+  const dataToBeSent = {
+    vendorName: formData.vendorName,
+    vendorEmail: formData.vendorEmail,
+    vendorWebsite: formData.vendorWebsite,
+    vendorCompanyName: formData.vendorCompanyName,
+    vendorContactNumber: formData.vendorContactNumber,
+    vendorAddress1: formData.vendorAddress1,
+    vendorAddress2: formData.vendorAddress2,
+    vendorCountry: selectedCountry?.name,
+    vendorState: selectedState?.name,
+    vendorCity: selectedCity?.name,
+    vendorPinCode: formData.vendorPinCode,
+    contactPersonName: formData.contactPersonName,
+    contactPersonEmail: formData.contactPersonEmail,
+    contactPersonContactNumber: formData.contactPersonContactNumber,
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data, error } = await supabase.from("vendor_table").insert([
+        {
+          email: Cookies.get("email"),
+          vendorDetails: dataToBeSent,
+          user_id: Cookies.get("uid"),
+        },
+      ]);
+      console.log(data, error);
+      swal({
+        title: "Vendor Added!",
+        text: "Vendor has been added successfully!",
+        icon: "success",
+        button: "OK",
+      });
+      // Reset the form data after the alert
+    } catch (error) {
+      swal({
+        title: "Error!",
+        text: "There was some error in adding the Vendor. Please try again or contact support.",
+        icon: "error",
+        button: "OK",
+      });
+    } finally {
+      handleOpen(null);
+    }
+  };
   const tdClasses = `py-3 px-5`;
 
   return (
@@ -75,16 +111,30 @@ export default function AddVendor() {
             <div className=" my-2 flex w-full flex-col justify-start gap-x-2 md:flex-row md:gap-x-4 ">
               <div className="mb-4 flex flex-col gap-4 md:w-1/2">
                 {/* Vendor name */}
-                <Input type="text" className="" size="md" label="Vendor Name" />
+                <Input
+                  type="text"
+                  className=""
+                  size="md"
+                  label="Vendor Name"
+                  name="vendorName"
+                />
                 {/* Email */}
                 <Input
                   type="email"
                   className=""
                   size="md"
                   label="Vendor email"
+                  name="vendorEmail"
+                  onChange={handleChange}
                 />
                 {/* Website */}
-                <Input type="url" className="" size="md" label="Website" />
+                <Input
+                  type="url"
+                  className=""
+                  size="md"
+                  label="Website"
+                  name="vendorWebsite"
+                />
               </div>
               <div className=" mb-2 flex flex-col gap-4 md:w-1/2">
                 {/* Company name */}
@@ -93,6 +143,8 @@ export default function AddVendor() {
                   className=""
                   size="md"
                   label="Company Name"
+                  name="vendorCompanyName"
+                  onChange={handleChange}
                 />
                 {/* Contact Number */}
                 <Input
@@ -100,16 +152,10 @@ export default function AddVendor() {
                   className=""
                   size="md"
                   label="Contact Number"
+                  name="vendorContactNumber"
+                  onChange={handleChange}
                 />
-                {/* Tax Preference */}
-                <Select
-                  label="Tax Preference"
-                  value={taxPreference}
-                  onChange={handleTaxPreferenceChange}
-                >
-                  <Option value="Taxable">Taxable</Option>
-                  <Option value="Non-Taxable">Non-Taxable</Option>
-                </Select>
+                {/* Tax Preference (intentionally deleted) */}
               </div>
             </div>
             {/* Vendor Info end */}
@@ -122,19 +168,79 @@ export default function AddVendor() {
             <div className=" my-2 flex w-full flex-col justify-start gap-x-2 md:flex-row md:gap-x-4 ">
               <div className="mb-4 flex w-full flex-col gap-4">
                 {/* Address 1 */}
-                <Input type="text" className="" size="md" label="Address 1" />
+                <Input
+                  type="text"
+                  className=""
+                  size="md"
+                  label="Address 1"
+                  name="vendorAddress1"
+                  onChange={handleChange}
+                />
                 {/* Address 2 */}
-                <Input type="text" className="" size="md" label="Address 2" />
+                <Input
+                  type="text"
+                  className=""
+                  size="md"
+                  label="Address 2"
+                  name="vendorAddress2"
+                  onChange={handleChange}
+                />
 
                 <div className="grid grid-cols-2 gap-2">
-                  {/* City name */}
-                  <Input type="text" label="City" />
+                  {/* Country name */}
+                  <Select
+                    options={Country.getAllCountries()}
+                    getOptionLabel={(options) => {
+                      return options["name"];
+                    }}
+                    getOptionValue={(options) => {
+                      return options["name"];
+                    }}
+                    value={selectedCountry}
+                    onChange={(item) => {
+                      setSelectedCountry(item);
+                    }}
+                  />
                   {/* State name */}
-                  <Input type="text" label="State" />
+                  <Select
+                    options={State?.getStatesOfCountry(
+                      selectedCountry?.isoCode
+                    )}
+                    getOptionLabel={(options) => {
+                      return options["name"];
+                    }}
+                    getOptionValue={(options) => {
+                      return options["name"];
+                    }}
+                    value={selectedState}
+                    onChange={(item) => {
+                      setSelectedState(item);
+                    }}
+                  />
+                  {/* City Name*/}
+                  <Select
+                    options={City.getCitiesOfState(
+                      selectedState?.countryCode,
+                      selectedState?.isoCode
+                    )}
+                    getOptionLabel={(options) => {
+                      return options["name"];
+                    }}
+                    getOptionValue={(options) => {
+                      return options["name"];
+                    }}
+                    value={selectedCity}
+                    onChange={(item) => {
+                      setSelectedCity(item);
+                    }}
+                  />
                   {/* ZIP/PIN code name */}
-                  <Input type="number" label="PIN Code" />
-                  {/* Country Name*/}
-                  <Input type="text" label="Country" />
+                  <Input
+                    type="number"
+                    label="PIN Code"
+                    name="vendorPinCode"
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
@@ -203,8 +309,9 @@ export default function AddVendor() {
                       <input
                         className="w-full text-gray-900 focus-visible:outline-none focus-visible:ring-1"
                         type="text"
-                        name=""
+                        name="ContactPersonName"
                         id=""
+                        onChange={handleChange}
                       />
                     </td>
                     <td className=" border border-gray-300">
@@ -212,8 +319,9 @@ export default function AddVendor() {
                       <input
                         className="w-full text-gray-900 focus-visible:outline-none focus-visible:ring-1"
                         type="number"
-                        name=""
+                        name="ContactPersonNumber"
                         id=""
+                        onChange={handleChange}
                       />
                     </td>
                     <td className=" border border-gray-300">
@@ -221,8 +329,9 @@ export default function AddVendor() {
                       <input
                         className="w-full text-gray-900 focus-visible:outline-none focus-visible:ring-1"
                         type="email"
-                        name=""
+                        name="ContactPersonEmail"
                         id=""
+                        onChange={handleChange}
                       />
                     </td>
                   </tr>
@@ -241,11 +350,7 @@ export default function AddVendor() {
           >
             <span>Cancel</span>
           </Button>
-          <Button
-            variant="gradient"
-            color="green"
-            onClick={() => handleOpen(null)}
-          >
+          <Button variant="gradient" color="green" onClick={handleSubmit}>
             <span>Confirm</span>
           </Button>
         </DialogFooter>
