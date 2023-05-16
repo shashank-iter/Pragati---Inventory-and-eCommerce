@@ -117,6 +117,7 @@ export default function AddVendor() {
                   size="md"
                   label="Vendor Name"
                   name="vendorName"
+                  onChange={handleChange}
                 />
                 {/* Email */}
                 <Input
