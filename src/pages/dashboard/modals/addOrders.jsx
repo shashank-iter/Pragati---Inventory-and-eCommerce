@@ -63,6 +63,7 @@ export default function AddOrders() {
   const dataToBeSent = {
     orderNumber: generateUniqueOrderId(),
     orderDate: orderDate,
+    orderQuantity: formData.orderQuantity,
     deliveryDate: deliveryDate,
     paymentDueDate: paymentDueDate,
     vendor: vendor,
@@ -191,6 +192,7 @@ export default function AddOrders() {
                   Order Date
                 </span>
                 <DatePicker
+                  dateFormat="dd/MM/yyyy"
                   selected={orderDate}
                   onChange={(date) => setOrderDate(date)}
                 />
@@ -202,12 +204,14 @@ export default function AddOrders() {
                   label="Order Quantity"
                   name="orderQuantity"
                   onChange={handleChange}
+                  type="number"
                 />
                 <span className="text-sm font-normal text-gray-600">
                   {" "}
                   Expected Delivery Date
                 </span>
                 <DatePicker
+                  dateFormat="dd/MM/yyyy"
                   selected={deliveryDate}
                   onChange={(date) => setDeliveryDate(date)}
                 />
@@ -225,6 +229,7 @@ export default function AddOrders() {
                   label="Order Value"
                   name="orderValue"
                   onChange={handleChange}
+                  type="number"
                 />
                 <Input
                   className=""
@@ -232,6 +237,7 @@ export default function AddOrders() {
                   label="Advance Paid"
                   name="advancePaid"
                   onChange={handleChange}
+                  type="number"
                 />
                 <Select
                   value={vendor}
@@ -256,6 +262,7 @@ export default function AddOrders() {
                   Payment Due Date
                 </span>
                 <DatePicker
+                  dateFormat="dd/MM/yyyy"
                   selected={paymentDueDate}
                   onChange={(date) => setPaymentDueDate(date)}
                 />
@@ -267,6 +274,7 @@ export default function AddOrders() {
                   label="Due Amount"
                   name="dueAmount"
                   onChange={handleChange}
+                  type="number"
                 />
                 <Input
                   className=""

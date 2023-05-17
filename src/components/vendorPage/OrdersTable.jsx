@@ -1,4 +1,5 @@
 import { Typography } from "@material-tailwind/react";
+import { format } from "date-fns";
 
 /**
  * This is a React functional component that renders an Orders Table.
@@ -17,7 +18,7 @@ export function OrdersTable({ headers, data }) {
 
   // Render the table
   return (
-    <table className="w-full min-w-[640px] table-fixed border-separate border-spacing-x-5">
+    <table className="w-full min-w-[640px] table-auto border-separate border-spacing-x-5">
       {/* Render the table headers */}
       <thead>
         <tr>
@@ -41,21 +42,30 @@ export function OrdersTable({ headers, data }) {
         {data.map(
           (
             {
-              orderNo,
+              orderNumber: orderNo,
               orderDate,
-              quantity,
-              expectedDeliveryDate,
+              orderQuantity: quantity,
+              deliveryDate: expectedDeliveryDate,
               orderValue,
               advancePaid,
-              duePayment,
+              dueAmount: duePayment,
               orderStatus,
               paymentDueDate,
+              vendor,
             },
             key,
             arr
           ) => {
-            {
-            }
+            // format the dates to display in the table
+            orderDate = format(new Date(orderDate), "dd-MM-yyyy");
+
+            expectedDeliveryDate = format(
+              new Date(expectedDeliveryDate),
+              "dd-MM-yyyy"
+            );
+
+            paymentDueDate = format(new Date(paymentDueDate), "dd-MM-yyyy");
+
             return (
               <tr key={key}>
                 <td className={tdPaddingClasses}>
@@ -68,7 +78,9 @@ export function OrdersTable({ headers, data }) {
                   </Typography>
                 </td>
                 <td className={tdPaddingClasses}>
-                  <Typography className={`text-sm font-medium`}>
+                  <Typography
+                    className={`whitespace-nowrap text-sm font-medium`}
+                  >
                     {orderDate}
                   </Typography>
                 </td>
@@ -78,7 +90,9 @@ export function OrdersTable({ headers, data }) {
                   </Typography>
                 </td>
                 <td className={tdPaddingClasses}>
-                  <Typography className={`text-sm font-medium`}>
+                  <Typography
+                    className={`whitespace-nowrap text-sm font-medium`}
+                  >
                     {expectedDeliveryDate}
                   </Typography>
                 </td>
@@ -103,7 +117,9 @@ export function OrdersTable({ headers, data }) {
                   </Typography>
                 </td>
                 <td className={tdPaddingClasses}>
-                  <Typography className={`text-sm font-medium`}>
+                  <Typography
+                    className={`whitespace-nowrap text-sm font-medium`}
+                  >
                     {paymentDueDate}
                   </Typography>
                 </td>

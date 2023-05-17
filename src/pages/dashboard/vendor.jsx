@@ -26,7 +26,7 @@ import {
 import AddVendor from "./modals/addVendor";
 import AddOrders from "./modals/addOrders";
 
-import { paymentsData, vendorsData, ordersData } from "@/data";
+import { paymentsData, vendorsData } from "@/data";
 import { PaymentsTable } from "@/components/vendorPage/PaymentsTable";
 import { VendorTable } from "@/components/vendorPage/VendorTable";
 import { OrdersTable } from "@/components/vendorPage/OrdersTable";
@@ -36,6 +36,8 @@ import { OrdersTable } from "@/components/vendorPage/OrdersTable";
  * @returns {JSX.Element} The rendered component.
  */
 const Vendor = () => {
+  const [ordersData, setOrdersDataTest] = useState([]);
+
   useEffect(() => {
     if (!Cookies.get("token")) {
       window.location.href = "/auth/sign-in";
@@ -126,14 +128,15 @@ const Vendor = () => {
   useEffect(() => {
     // setIsLoading(true);
     async function fetchVendorData() {
-      const fetchedData = await fetchData();
-      // console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
-      setVendorData(fetchedData);
-      console.log("vendorData", vendorData);
+      let fetchedData = await fetchData();
+
+      // extract data from the nested object "vendorOrderData"
+      fetchedData = fetchedData.map(({ vendorOrderData }) => vendorOrderData);
+      setOrdersDataTest(fetchedData);
 
       // map over the data print individual product data
-      // productData.map((item, index) => {
-      //   // console.log(item.product_info.productName);
+      // ordersData.map((item, index) => {
+      //   console.log(item);
       // });
 
       // setIsLoading(false);
