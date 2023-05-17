@@ -180,7 +180,7 @@ export default function AddProduct() {
       const fetchedData = await fetchData();
       // console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
       setVendorList(fetchedData);
-      console.log(vendorList);
+
       console.log("🚀 ~ fetchProductData ~ fetchedData:");
 
       // map over the data print individual product data

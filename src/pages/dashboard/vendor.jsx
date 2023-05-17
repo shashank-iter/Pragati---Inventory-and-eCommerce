@@ -23,6 +23,7 @@ import {
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import AddVendor from "./modals/addVendor";
+import AddOrders from "./modals/addOrders";
 
 import { paymentsData, vendorsData, ordersData } from "@/data";
 import { PaymentsTable } from "@/components/vendorPage/PaymentsTable";
@@ -101,6 +102,7 @@ const Vendor = () => {
           </div>
           <div className="flex w-1/2 items-center justify-end gap-2">
             <AddVendor />
+            <AddOrders />
             {/* settings button */}
             <Cog6ToothIcon
               type="button"
