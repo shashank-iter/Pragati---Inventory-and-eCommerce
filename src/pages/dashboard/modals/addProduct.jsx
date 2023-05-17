@@ -44,7 +44,7 @@ export default function AddProduct() {
   const [sgst, setSgst] = useState(null);
   const [vendor, setVendor] = useState(null);
   const [path, setPath] = useState(null);
-
+  const [vendorList, setVendorList] = useState([]);
   const dataToBeSent = {
     productName: formData.productName,
     productType: productType,
@@ -161,6 +161,38 @@ export default function AddProduct() {
     }
     setPath(data.path);
   }
+
+  async function fetchData() {
+    try {
+      let { data: vendor_table, error } = await supabase
+        .from("vendor_table")
+        .select("vendorDetails");
+      return vendor_table;
+    } catch (error) {
+      swal(
+        "There was some error in fetching the vendor data. Please try again or contact support."
+      );
+    }
+  }
+  useEffect(() => {
+    // setIsLoading(true);
+    async function fetchVendorData() {
+      const fetchedData = await fetchData();
+      // console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
+      setVendorList(fetchedData);
+      console.log(vendorList);
+      console.log("🚀 ~ fetchProductData ~ fetchedData:");
+
+      // map over the data print individual product data
+      // productData.map((item, index) => {
+      //   // console.log(item.product_info.productName);
+      // });
+
+      // setIsLoading(false);
+    }
+
+    fetchVendorData();
+  }, []);
 
   return (
     <Fragment>
@@ -397,9 +429,17 @@ export default function AddProduct() {
                   className="flex-col"
                   onChange={(value) => handleSelectChange("vendor", value)}
                 >
-                  <Option value="chindiBaniya">Chindi Baniya</Option>
-                  <Option value="samosaChor">Samosa Chor</Option>
-                  <Option value="paniDoodhwala">Pani Doodhwala</Option>
+                  {vendorList.map((item, index) => {
+                    return (
+                      <Option
+                        key={item.vendorDetails.vendorContactNumber}
+                        value={item.vendorDetails.vendorName}
+                      >
+                        {" "}
+                        {item.vendorDetails.vendorName}{" "}
+                      </Option>
+                    );
+                  })}
                 </Select>
               </div>
             </div>
