@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import supabase from "../auth/supabaseClient";
 import {
   Card,
   CardHeader,
@@ -86,6 +87,60 @@ const Vendor = () => {
       ),
     },
   ];
+
+  const [vendorData, setVendorData] = useState([]);
+
+  // async function to fetch data
+  async function fetchData() {
+    try {
+      let { data: vendor_orders, error } = await supabase
+        .from("vendor_orders")
+        .select("vendorOrderData");
+
+      return vendor_orders;
+      console.log(error);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
+   * This is an async function that deletes a row from a Supabase table based on the provided ID.
+   */
+  async function deleteRowById(id) {
+    const { data, error } = await supabase
+      .from("product_table")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error deleting row:", error);
+    } else {
+      console.log("Row deleted successfully:", data);
+    }
+  }
+
+  /**
+   * This is a React useEffect hook that fetches data asynchronously and updates state variables.
+   */
+  useEffect(() => {
+    // setIsLoading(true);
+    async function fetchVendorData() {
+      const fetchedData = await fetchData();
+      // console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
+      setVendorData(fetchedData);
+      console.log("vendorData", vendorData);
+
+      // map over the data print individual product data
+      // productData.map((item, index) => {
+      //   // console.log(item.product_info.productName);
+      // });
+
+      // setIsLoading(false);
+    }
+
+    fetchVendorData();
+  }, []);
 
   return (
     <div className="mt-12">
