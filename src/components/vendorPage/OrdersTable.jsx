@@ -86,7 +86,7 @@ export function OrdersTable({ headers, data }) {
                 </td>
                 <td className={tdPaddingClasses}>
                   <Typography className="text-sm font-medium">
-                    {quantity}
+                    {quantity ? quantity : "-"}
                   </Typography>
                 </td>
                 <td className={tdPaddingClasses}>
