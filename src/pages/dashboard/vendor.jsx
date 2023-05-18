@@ -36,7 +36,8 @@ import { OrdersTable } from "@/components/vendorPage/OrdersTable";
  * @returns {JSX.Element} The rendered component.
  */
 const Vendor = () => {
-  const [ordersData, setOrdersDataTest] = useState([]);
+  const [ordersData, setOrdersData] = useState([]);
+  const [paymentsDataTest, setPaymentsDataTest] = useState([]);
 
   useEffect(() => {
     if (!Cookies.get("token")) {
@@ -63,7 +64,7 @@ const Vendor = () => {
       desc: (
         <PaymentsTable
           headers={["Vendor name", "payments made", "Due Payments"]}
-          data={paymentsData}
+          data={paymentsDataTest}
         />
       ),
     },
@@ -132,12 +133,26 @@ const Vendor = () => {
 
       // extract data from the nested object "vendorOrderData"
       fetchedData = fetchedData.map(({ vendorOrderData }) => vendorOrderData);
-      setOrdersDataTest(fetchedData);
+      setOrdersData(fetchedData);
+      // setPaymentsDataTest(fetchedData);
+      // using dot notation
+      // const filteredData = fetchedData.map(({vendor, advancePaid, dueAmount}) => {vendor, advancePaid, dueAmount});
+      // extract data for  each vendor
+      const filteredDataForPayments = fetchedData.map((item) => {
+        return {
+          vendor: item.vendor,
+          advancePaid: item.advancePaid,
+          dueAmount: item.dueAmount,
+        };
+      });
+      setPaymentsDataTest(filteredDataForPayments);
+
+      console.log(paymentsDataTest);
 
       // map over the data print individual product data
-      // ordersData.map((item, index) => {
-      //   console.log(item);
-      // });
+      ordersData.map((item, index) => {
+        // console.log(item.vendor, item.dueAmount, item.advancePaid);
+      });
 
       // setIsLoading(false);
     }

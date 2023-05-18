@@ -38,33 +38,44 @@ export function PaymentsTable({ headers, data }) {
       </thead>
       {/* Render the table body */}
       <tbody className="">
-        {data.map(({ vendorName, paymentsMade, paymentsDue }, key, arr) => {
-          {
+        {/* {console.log({data})} */}
+        {data.map(
+          (
+            {
+              vendor: vendorName,
+              advancePaid: paymentsMade,
+              dueAmount: paymentsDue,
+            },
+            key,
+            arr
+          ) => {
+            {
+            }
+            return (
+              <tr key={key}>
+                <td className={tdPaddingClasses}>
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-medium"
+                  >
+                    {vendorName ? vendorName : "N/A"}
+                  </Typography>
+                </td>
+                <td className={tdPaddingClasses}>
+                  <Typography className={`text-sm font-medium`}>
+                    ₹ {paymentsMade}
+                  </Typography>
+                </td>
+                <td className={tdPaddingClasses}>
+                  <Typography className="text-sm font-medium">
+                    ₹ {paymentsDue}
+                  </Typography>
+                </td>
+              </tr>
+            );
           }
-          return (
-            <tr key={key}>
-              <td className={tdPaddingClasses}>
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-medium"
-                >
-                  {vendorName}
-                </Typography>
-              </td>
-              <td className={tdPaddingClasses}>
-                <Typography className={`text-sm font-medium`}>
-                  ₹ {paymentsMade}
-                </Typography>
-              </td>
-              <td className={tdPaddingClasses}>
-                <Typography className="text-sm font-medium">
-                  ₹ {paymentsDue}
-                </Typography>
-              </td>
-            </tr>
-          );
-        })}
+        )}
       </tbody>
     </table>
   );
