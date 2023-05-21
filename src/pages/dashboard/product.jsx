@@ -142,8 +142,11 @@ export function Product() {
                       <div className="flex items-center gap-4">
                         <Avatar
                           src={
-                            "https://oukyirdebfesftyvvuou.supabase.co/storage/v1/object/public/productImage/" +
                             item.product_info.image_id
+                              ? `https://oukyirdebfesftyvvuou.supabase.co/storage/v1/object/public/productImage/${item.product_info.image_id}`
+                              : // mood bane to replace the placeholder image with the commented one and have fun ✌️
+                                "https://via.placeholder.com/150"
+                            // "http://placeskull.com/100/100"
                           }
                           alt={item.product_info.productName}
                           size="sm"
