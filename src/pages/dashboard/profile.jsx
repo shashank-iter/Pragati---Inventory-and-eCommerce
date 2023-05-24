@@ -1,5 +1,7 @@
 import {
   Card,
+  Input,
+  Textarea,
   CardBody,
   CardHeader,
   CardFooter,
@@ -18,16 +20,101 @@ import {
   Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
-import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
-import { platformSettingsData, conversationsData, projectsData } from "@/data";
-
+import supabase from "../auth/supabaseClient";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import swal from "sweetalert";
 export function Profile() {
   useEffect(() => {
     if (!Cookies.get("token")) {
       window.location.href = "/auth/sign-in";
     }
   });
+
+  const [formData, setFormData] = useState({
+    // productType: "",
+    // taxType: "",
+  });
+
+  const [profileData, setProfileData] = useState({});
+  async function getProfileData() {
+    const { data, error } = await supabase.from("profiles").select("*");
+    Cookies.set("gstNumber", data[0].profileData.gstNumber);
+    return data;
+  }
+
+  useEffect(() => {
+    // setIsLoading(true);
+    async function fetchProductData() {
+      const fetchedData = await getProfileData();
+      // console.log("🚀 ~ fetchProductData ~ fetchedData:", fetchedData);
+      setFormData(fetchedData[0].profileData);
+      console.log(formData);
+      console.log("🚀 ~ fetchProductData ~ fetchedData:");
+
+      // map over the data print individual product data
+      // productData.map((item, index) => {
+      //   // console.log(item.product_info.productName);
+      // });
+
+      // setIsLoading(false);
+    }
+    fetchProductData();
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  const dataToBeSent = {
+    businessName: formData.businessName,
+    businessAddress: formData.businessAddress,
+    businessPhone: formData.businessPhone,
+    businessEmail: formData.businessEmail,
+    businessWebsite: formData.businessWebsite,
+    gstNumber: formData.gstNumber,
+    cinNumber: formData.cinNumber,
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .upsert(
+          { user_id: Cookies.get("uid"), profileData: dataToBeSent },
+          { onConflict: "user_id" }
+        )
+        .select();
+
+      if (error) throw error;
+      else {
+        swal({
+          title: "Profile Updated!",
+          text: "Profile has been updated successfully!",
+          icon: "success",
+          button: "OK",
+        });
+      }
+      // Reset the form data after the alert
+    } catch (error) {
+      console.log(error);
+      swal({
+        title: "Error!",
+        text: "There was some error in updating the profile. Please try again or contact support.",
+        icon: "error",
+        button: "OK",
+      });
+    }
+  };
+
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80)] bg-cover	bg-center">
@@ -38,183 +125,98 @@ export function Profile() {
           <div className="mb-10 flex items-center justify-between gap-6">
             <div className="flex items-center gap-6">
               <Avatar
-                src="/img/bruce-mars.jpeg"
+                src="/img/user.png"
                 alt="bruce-mars"
                 size="xl"
                 className="rounded-lg shadow-lg shadow-blue-gray-500/40"
               />
               <div>
                 <Typography variant="h5" color="blue-gray" className="mb-1">
-                  Richard Davis
+                  {Cookies.get("name")}
                 </Typography>
                 <Typography
                   variant="small"
                   className="font-normal text-blue-gray-600"
                 >
-                  CEO / Co-Founder
+                  {Cookies.get("email")}
                 </Typography>
               </div>
             </div>
-            <div className="w-96">
-              <Tabs value="app">
-                <TabsHeader>
-                  <Tab value="app">
-                    <HomeIcon className="-mt-1 mr-2 inline-block h-5 w-5" />
-                    App
-                  </Tab>
-                  <Tab value="message">
-                    <ChatBubbleLeftEllipsisIcon className="-mt-0.5 mr-2 inline-block h-5 w-5" />
-                    Message
-                  </Tab>
-                  <Tab value="settings">
-                    <Cog6ToothIcon className="-mt-1 mr-2 inline-block h-5 w-5" />
-                    Settings
-                  </Tab>
-                </TabsHeader>
-              </Tabs>
-            </div>
           </div>
-          <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
-            <div>
-              <Typography variant="h6" color="blue-gray" className="mb-3">
-                Platform Settings
-              </Typography>
-              <div className="flex flex-col gap-12">
-                {platformSettingsData.map(({ title, options }) => (
-                  <div key={title}>
-                    <Typography className="mb-4 block text-xs font-semibold uppercase text-blue-gray-500">
-                      {title}
-                    </Typography>
-                    <div className="flex flex-col gap-6">
-                      {options.map(({ checked, label }) => (
-                        <Switch
-                          key={label}
-                          id={label}
-                          label={label}
-                          defaultChecked={checked}
-                          labelProps={{
-                            className: "text-sm font-normal text-blue-gray-500",
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div className="gird-cols-1 mb-12 grid gap-4 px-4 lg:grid-cols-2 xl:grid-cols-3">
+            <div className="flex flex-col gap-4">
+              <Input
+                className=""
+                size="md"
+                label="Business Name"
+                name="businessName"
+                onChange={handleChange}
+                value={formData.businessName}
+              />
+              <Input
+                className=""
+                size="md"
+                label="GST Number"
+                name="gstNumber"
+                onChange={handleChange}
+                value={formData.gstNumber}
+              />
+              <Textarea
+                className=""
+                label="Business Address"
+                name="businessAddress"
+                onChange={handleChange}
+                value={formData.businessAddress}
+              />
             </div>
-            <ProfileInfoCard
-              title="Profile Information"
-              description="Hi, I'm Alec Thompson, Decisions: If you can't decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
-              details={{
-                "first name": "Alec M. Thompson",
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
-                social: (
-                  <div className="flex items-center gap-4">
-                    <i className="fa-brands fa-facebook text-blue-700" />
-                    <i className="fa-brands fa-twitter text-blue-400" />
-                    <i className="fa-brands fa-instagram text-purple-500" />
-                  </div>
-                ),
-              }}
-              action={
-                <Tooltip content="Edit Profile">
-                  <PencilIcon className="h-4 w-4 cursor-pointer text-blue-gray-500" />
-                </Tooltip>
-              }
-            />
-            <div>
-              <Typography variant="h6" color="blue-gray" className="mb-3">
-                Platform Settings
-              </Typography>
-              <ul className="flex flex-col gap-6">
-                {conversationsData.map((props) => (
-                  <MessageCard
-                    key={props.name}
-                    {...props}
-                    action={
-                      <Button variant="text" size="sm">
-                        reply
-                      </Button>
-                    }
-                  />
-                ))}
-              </ul>
+            <div className="flex flex-col gap-4">
+              <Input
+                className=""
+                size="md"
+                label="Business Phone"
+                type="number"
+                name="businessPhone"
+                onChange={handleChange}
+                value={formData.businessPhone}
+              />
+              <Input
+                className=""
+                size="md"
+                label="CIN Number"
+                name="cinNumber"
+                onChange={handleChange}
+                value={formData.cinNumber}
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <Input
+                className=""
+                size="md"
+                label="Business Email"
+                name="businessEmail"
+                onChange={handleChange}
+                value={formData.businessEmail}
+              />
+
+              <Input
+                className=""
+                size="md"
+                label="Business Website"
+                name="businessWebsite"
+                onChange={handleChange}
+                value={formData.businessWebsite}
+              />
             </div>
           </div>
           <div className="px-4 pb-4">
-            <Typography variant="h6" color="blue-gray" className="mb-2">
-              Projects
-            </Typography>
-            <Typography
-              variant="small"
-              className="font-normal text-blue-gray-500"
+            <Button
+              variant="gradient"
+              color="white"
+              className="sm:text-b bg-blue-400 text-sm"
+              onClick={handleSubmit}
             >
-              Architects design houses
-            </Typography>
-            <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-              {projectsData.map(
-                ({ img, title, description, tag, route, members }) => (
-                  <Card key={title} color="transparent" shadow={false}>
-                    <CardHeader
-                      floated={false}
-                      color="gray"
-                      className="mx-0 mt-0 mb-4 h-64 xl:h-40"
-                    >
-                      <img
-                        src={img}
-                        alt={title}
-                        className="h-full w-full object-cover"
-                      />
-                    </CardHeader>
-                    <CardBody className="py-0 px-1">
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
-                      >
-                        {tag}
-                      </Typography>
-                      <Typography
-                        variant="h5"
-                        color="blue-gray"
-                        className="mt-1 mb-2"
-                      >
-                        {title}
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        className="font-normal text-blue-gray-500"
-                      >
-                        {description}
-                      </Typography>
-                    </CardBody>
-                    <CardFooter className="mt-6 flex items-center justify-between py-0 px-1">
-                      <Link to={route}>
-                        <Button variant="outlined" size="sm">
-                          view project
-                        </Button>
-                      </Link>
-                      <div>
-                        {members.map(({ img, name }, key) => (
-                          <Tooltip key={name} content={name}>
-                            <Avatar
-                              src={img}
-                              alt={name}
-                              size="xs"
-                              variant="circular"
-                              className={`cursor-pointer border-2 border-white ${
-                                key === 0 ? "" : "-ml-2.5"
-                              }`}
-                            />
-                          </Tooltip>
-                        ))}
-                      </div>
-                    </CardFooter>
-                  </Card>
-                )
-              )}
-            </div>
+              Update Profile
+            </Button>
           </div>
         </CardBody>
       </Card>
