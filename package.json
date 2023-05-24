@@ -24,7 +24,9 @@
     "apexcharts": "3.35.5",
     "country-state-city": "^3.1.4",
     "date-fns": "2.29.3",
+    "html-to-image": "1.11.11",
     "js-cookie": "^3.0.5",
+    "jspdf": "2.5.1",
     "prop-types": "15.8.1",
     "react": "18.2.0",
     "react-apexcharts": "1.4.0",
@@ -32,10 +34,13 @@
     "react-dom": "18.2.0",
     "react-router-dom": "6.4.2",
     "react-select": "^5.7.3",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "uid": "2.0.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@headlessui/react": "1.7.13",
+    "@tailwindcss/forms": "0.5.3",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@vitejs/plugin-react": "2.1.0",
