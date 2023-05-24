@@ -40,7 +40,8 @@ export function Product() {
     try {
       let { data: product_table, error } = await supabase
         .from("product_table")
-        .select("*");
+        .select("*")
+        .ilike("email", `%${Cookies.get("email").split("@")[0]}%`);
 
       return product_table;
     } catch (error) {
