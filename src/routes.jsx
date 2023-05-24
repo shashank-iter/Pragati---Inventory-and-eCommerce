@@ -22,6 +22,7 @@ import {
   PaymentReceived,
 } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
+import { MilkParlour } from "@/pages/storePages";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -102,6 +103,19 @@ export const routes = [
         name: "sign up",
         path: "/sign-up",
         element: <SignUp />,
+      },
+    ],
+  },
+  // store pages that'll be publicly available
+  {
+    title: "store pages",
+    layout: "store",
+    pages: [
+      {
+        icon: <InboxArrowDownIcon {...icon} />,
+        name: "milkParlour",
+        path: "/milkParlour",
+        element: <MilkParlour />,
       },
     ],
   },
