@@ -36,7 +36,6 @@ export function Profile() {
     // taxType: "",
   });
 
-  const [profileData, setProfileData] = useState({});
   async function getProfileData() {
     const { data, error } = await supabase.from("profiles").select("*");
     Cookies.set("gstNumber", data[0].profileData.gstNumber);
