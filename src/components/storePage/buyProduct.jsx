@@ -14,10 +14,23 @@ import swal from "sweetalert";
 import { uid } from "uid";
 import { th } from "date-fns/locale";
 import PayButton from "@/layouts/payButton";
+import { set } from "date-fns";
 
-export default function BuyProduct({ product: productData }, props) {
+export default function BuyProduct({ product: productData }) {
   // console.log(productData);
 
+  async function fetchButtonid() {
+    let { data, error } = await supabase
+      .from("profiles")
+      .select("profileData")
+      .ilike("email", `%${Cookies.get("key")}%`);
+
+    Cookies.set("buttonid", data[0].profileData.razorpayButtonId);
+  }
+
+  useEffect(() => {
+    fetchButtonid();
+  }, []);
   const [size, setSize] = useState(null);
 
   const handleOpen = (value) => setSize(value);
@@ -226,7 +239,7 @@ export default function BuyProduct({ product: productData }, props) {
           </Button>
           <div className=" inline px-5 py-2">
             {" "}
-            <PayButton />{" "}
+            <PayButton />
           </div>
           <PayButton />
         </DialogFooter>
