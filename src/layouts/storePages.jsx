@@ -5,13 +5,14 @@ import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import supabase from "../pages/auth/supabaseClient";
-import PayButton from "./payButton";
+import BuyProduct from "@/components/storePage/buyProduct";
+
 export const StorePages = () => {
   // array of routes
   const imgBaseUrl =
     "https://oukyirdebfesftyvvuou.supabase.co/storage/v1/object/public/productImage/";
   const { key } = useParams();
-  console.log(key);
+  // console.log(key);
   Cookies.set("key", key);
   const navbarRoutes = [
     {
@@ -30,7 +31,7 @@ export const StorePages = () => {
         .ilike("email", `%${Cookies.get("key")}%`);
       if (error) throw error;
       else {
-        console.log(data);
+        // console.log(data);
         setProducts(data);
       }
     } catch (error) {
@@ -56,7 +57,7 @@ export const StorePages = () => {
             {products.map((product) => (
               <div
                 key={product.product_info.id}
-                className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
+                className="group relative flex cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
               >
                 <div className="aspect-w-3 aspect-h-4 sm:aspect-none bg-gray-200 group-hover:opacity-75 sm:h-96">
                   <img
@@ -68,21 +69,20 @@ export const StorePages = () => {
                 <div className="flex flex-1 flex-col space-y-2 p-4">
                   <h3 className="text-sm font-medium text-gray-900">
                     <a href={product.href}>
-                      <span aria-hidden="true" className="absolute inset-0" />
                       {product.product_info.productName}
                     </a>
                   </h3>
                   <p className="text-sm text-gray-500">
                     {product.product_info.description}
                   </p>
-                  <div className="flex flex-1 flex-col justify-end">
-                    <p className="text-sm italic text-gray-500">
+                  <div className="flex flex-1 justify-between">
+                    {/* <p className="text-sm italic text-gray-500">
                       {product.options}
-                    </p>
+                    </p> */}
                     <p className="text-base font-medium text-gray-900">
                       {"₹ " + product.product_info.sellingPrice}
                     </p>
-                    <PayButton />
+                    <BuyProduct product={product["product_info"]} />
                   </div>
                 </div>
               </div>
