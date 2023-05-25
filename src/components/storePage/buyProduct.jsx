@@ -224,6 +224,11 @@ export default function BuyProduct({ product: productData }, props) {
           <Button variant="gradient" color="green" onClick={handleSubmit}>
             <span>Submit</span>
           </Button>
+          <div className=" inline px-5 py-2">
+            {" "}
+            <PayButton />{" "}
+          </div>
+          <PayButton />
         </DialogFooter>
       </Dialog>
     </Fragment>
