@@ -11,8 +11,11 @@ import {
 import supabase from "@/pages/auth/supabaseClient";
 import Cookies from "js-cookie";
 import swal from "sweetalert";
+import { uid } from "uid";
+import { th } from "date-fns/locale";
+import PayButton from "@/layouts/payButton";
 
-export default function BuyProduct({ product: productData }) {
+export default function BuyProduct({ product: productData }, props) {
   // console.log(productData);
 
   const [size, setSize] = useState(null);
@@ -21,50 +24,20 @@ export default function BuyProduct({ product: productData }) {
 
   const [formData, setFormData] = useState({
     orderName: productData.productName,
-    orderId: "",
-    orderValue: "",
+    orderId: uid(6),
+    orderValue: productData.sellingPrice,
     customerName: "",
     customerAddress: "",
     customerPhone: "",
     customerEmail: "",
   });
 
-  const handleChange = (e) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  // const dataToBeSent = {
-  //   productName: formData.productName,
-  //   productType: productType,
-  //   taxType: taxType,
-  //   cgst: cgst,
-  //   sgst: sgst,
-  //   vendor: vendor,
-  //   dimensions: formData.dimensions,
-  //   manufacturer: formData.manufacturer,
-  //   ean: formData.ean,
-  //   mpn: formData.mpn,
-  //   brand: formData.brand,
-  //   isbn: formData.isbn,
-  //   weight: formData.weight,
-  //   upc: formData.upc,
-  //   sellingPrice: formData.sellingPrice,
-  //   description: formData.description,
-  //   costPrice: formData.costPrice,
-  //   openingStock: formData.openingStock,
-  //   reorderPoint: formData.reorderPoint,
-  //   image_id: path,
-  // };
-
   /**
    * The function resets the form data by setting all input fields to empty strings.
    */
   const resetFormData = () => {
     setFormData({
-      orderName: productData.productName,
+      orderName: "",
       orderId: "",
       orderValue: "",
       customerName: "",
@@ -74,10 +47,19 @@ export default function BuyProduct({ product: productData }) {
     });
   };
 
+  const datatobesent = {
+    orderName: formData.orderName,
+    orderId: formData.orderId,
+    orderValue: formData.orderValue,
+    customerName: formData.customerName,
+    customerAddress: formData.customerAddress,
+    customerPhone: formData.customerPhone,
+    customerEmail: formData.customerEmail,
+  };
   /**
    * This function updates a product's information in a Supabase database.
    */
-  const handleUpdate = async (id, updatedData) => {
+  const handlePay = async (id, updatedData) => {
     const { data, error } = await supabase
       .from("product_table")
       .update({ product_info: updatedData })
@@ -98,20 +80,24 @@ export default function BuyProduct({ product: productData }) {
     e.preventDefault();
 
     try {
-      // handleUpdate(rowId, dataToBeSent);
+      const { data, error } = await supabase
+        .from("customer_orders")
+        .insert([{ orderData: datatobesent, shopID: Cookies.get("key") }]);
+      if (error) throw error;
+      else {
+        swal({
+          title: "Order Received! Proceed to Payment",
+          text: "Your order has been received. Please proceed to payment.",
+          icon: "success",
+          button: "OK",
+        });
+      }
 
-      swal({
-        title: "Product Updated!",
-        text: "Product info has been edited successfully!",
-        icon: "success",
-        button: "OK",
-      });
-
-      resetFormData(); // Reset the form data after the alert
+      // Reset the form data after the alert
     } catch (error) {
       swal({
-        title: "Error!",
-        text: "There was some error in adding the product. Please try again or contact support.",
+        title: "Error! Order not received.",
+        text: "There was some error in placing your order. Please try again or contact support. Please do not proceed to payment.",
         icon: "error",
         button: "OK",
       });
@@ -119,22 +105,6 @@ export default function BuyProduct({ product: productData }) {
       handleOpen(null);
     }
   };
-
-  async function uploadImage(e) {
-    let file = e.target.files[0];
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Math.random()}.${fileExt}`;
-    const filePath = `${fileName}`;
-    let { data, error } = await supabase.storage
-      .from("productImage")
-      .upload(Cookies.get("uid") + "/" + filePath, file);
-    if (error) {
-      swal(
-        "There was some error in uploading the image. Please try again or contact support."
-      );
-    }
-    setPath(data.path);
-  }
 
   // handle input changes
   const handleInputChange = (e) => {
@@ -175,7 +145,7 @@ export default function BuyProduct({ product: productData }) {
                   size="md"
                   label="Order Name"
                   name="orderName"
-                  disabled
+                  readOnly
                   value={formData.orderName}
                   onChange={handleInputChange}
                 />
@@ -186,7 +156,7 @@ export default function BuyProduct({ product: productData }) {
                   name="orderId"
                   label="Order ID"
                   value={formData.orderId}
-                  onChange={handleInputChange}
+                  readOnly
                 />
               </div>
               <Input
@@ -194,7 +164,7 @@ export default function BuyProduct({ product: productData }) {
                 name="orderValue"
                 label="Order Value"
                 value={formData.orderValue}
-                onChange={handleInputChange}
+                readOnly
               />
             </div>
 
@@ -224,9 +194,10 @@ export default function BuyProduct({ product: productData }) {
               <div className=" mb-2 flex flex-col gap-4 md:w-1/2">
                 {" "}
                 <Input
-                  type="tel"
+                  type="number"
+                  maxLength={16}
                   name="customerPhone"
-                  label="Customer Phone"
+                  label="Customer Phone (include country code))"
                   value={formData.customerPhone}
                   onChange={handleInputChange}
                 />
