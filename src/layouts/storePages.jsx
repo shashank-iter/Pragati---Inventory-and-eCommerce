@@ -5,7 +5,7 @@ import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import supabase from "../pages/auth/supabaseClient";
-
+import PayButton from "./payButton";
 export const StorePages = () => {
   // array of routes
   const imgBaseUrl =
@@ -82,6 +82,7 @@ export const StorePages = () => {
                     <p className="text-base font-medium text-gray-900">
                       {"₹ " + product.product_info.sellingPrice}
                     </p>
+                    <PayButton />
                   </div>
                 </div>
               </div>
