@@ -81,21 +81,19 @@ export default function editCustomerOrder({ customerdata }) {
       //   const { data, error } = await supabase
       //     .from("customer_orders")
       //     .update({
-      //       paymentCompleted: paymentStatus,
-
-      //       orderCompleted: orderStatus,
+      //     paymentCompleted: "true"
       //     })
-      //     .eq("uniqueCode", uq);
+      //     .eq("id", rowID);
       const { data, error } = await supabase
         .from("customer_orders")
         .upsert(
           {
             paymentCompleted: paymentStatus,
             orderCompleted: orderStatus,
-            uniqueCode: uq,
+            id: rowID,
             orderData: dataToSend,
           },
-          { onConflict: "uniqueCode" }
+          { onConflict: "id" }
         )
         .select();
 
