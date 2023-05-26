@@ -26,7 +26,7 @@ import {
 import AddVendor from "./modals/addVendor";
 import AddOrders from "./modals/addOrders";
 
-import { paymentsData, vendorsData } from "@/data";
+// import { paymentsData, vendorsData } from "@/data";
 import { PaymentsTable } from "@/components/vendorPage/PaymentsTable";
 import { VendorTable } from "@/components/vendorPage/VendorTable";
 import { OrdersTable } from "@/components/vendorPage/OrdersTable";
@@ -38,12 +38,36 @@ import { OrdersTable } from "@/components/vendorPage/OrdersTable";
 const Vendor = () => {
   const [ordersData, setOrdersData] = useState([]);
   const [paymentsDataTest, setPaymentsDataTest] = useState([]);
+  const [vendorDetailData, setVendorDetailData] = useState([]);
+
+  async function fetchVendorData() {
+    try {
+      let { data: vendor_table, error } = await supabase
+        .from("vendor_table")
+        .select("vendorDetails");
+      return vendor_table;
+    } catch (error) {
+      swal(
+        "There was some error in fetching the vendor data. Please try again or contact support."
+      );
+    }
+  }
 
   useEffect(() => {
+    async function fetchData() {
+      let fetchedData = await fetchVendorData();
+      // extract data from the nested object "fetchVendorData"
+      fetchedData = fetchedData.map(({ vendorDetails }) => vendorDetails);
+      setVendorDetailData(fetchedData);
+    }
+
     if (!Cookies.get("token")) {
       window.location.href = "/auth/sign-in";
+    } else {
+      fetchData();
     }
-  });
+  }, []);
+
   // Data for tabs
   const tabsData = [
     {
@@ -52,8 +76,8 @@ const Vendor = () => {
       // Vendor table component
       desc: (
         <VendorTable
-          headers={["vendor name", "Company Name", "Email", "payments"]}
-          data={vendorsData}
+          headers={["vendor name", "Company Name", "Email"]}
+          data={vendorDetailData}
         />
       ),
     },
@@ -128,7 +152,7 @@ const Vendor = () => {
    */
   useEffect(() => {
     // setIsLoading(true);
-    async function fetchVendorData() {
+    async function fetchVendorOrdersData() {
       let fetchedData = await fetchData();
 
       // extract data from the nested object "vendorOrderData"
@@ -147,7 +171,7 @@ const Vendor = () => {
       });
       setPaymentsDataTest(filteredDataForPayments);
 
-      console.log(paymentsDataTest);
+      // console.log(paymentsDataTest);
 
       // map over the data print individual product data
       ordersData.map((item, index) => {
@@ -157,7 +181,7 @@ const Vendor = () => {
       // setIsLoading(false);
     }
 
-    fetchVendorData();
+    fetchVendorOrdersData();
   }, []);
 
   return (

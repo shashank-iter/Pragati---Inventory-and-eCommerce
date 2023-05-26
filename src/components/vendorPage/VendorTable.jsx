@@ -37,41 +37,45 @@ export function VendorTable({ headers, data }) {
       </thead>
       {/* table body */}
       <tbody className="">
-        {data.map(({ vendorName, companyName, email, payments }, key, arr) => {
-          // const tdClasses = `py-3 px-5`;
-          return (
-            <tr key={key}>
-              <td className={tdPaddingClasses}>
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-medium"
-                >
-                  {vendorName}
-                </Typography>
-              </td>
-              <td className={tdPaddingClasses}>
-                <Typography className={`text-sm font-medium`}>
-                  {companyName}
-                </Typography>
-              </td>
-              <td className={tdPaddingClasses}>
-                <Typography className="text-sm font-medium">{email}</Typography>
-              </td>
-              <td className={tdPaddingClasses}>
-                {payments ? (
-                  <span className="block w-12 rounded-md bg-green-400 py-1.5 px-2 text-center text-white ">
-                    Paid
-                  </span>
-                ) : (
-                  <span className="block w-12 rounded-md bg-red-400 py-1.5 px-2 text-center text-white ">
-                    Due
-                  </span>
-                )}
-              </td>
-            </tr>
-          );
-        })}
+        {data.map(
+          (
+            // map over the data print individual vendor data
+            // rename properties and have default values
+            {
+              vendorName = "xyz",
+              vendorCompanyName: companyName = "xyz and Co.",
+              vendorEmail: email = "xyz@homail.com",
+              payments = false,
+            },
+            key,
+            arr
+          ) => {
+            // const tdClasses = `py-3 px-5`;
+            return (
+              <tr key={key}>
+                <td className={tdPaddingClasses}>
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-medium"
+                  >
+                    {vendorName}
+                  </Typography>
+                </td>
+                <td className={tdPaddingClasses}>
+                  <Typography className={`text-sm font-medium`}>
+                    {companyName}
+                  </Typography>
+                </td>
+                <td className={tdPaddingClasses}>
+                  <Typography className="text-sm font-medium">
+                    {email}
+                  </Typography>
+                </td>
+              </tr>
+            );
+          }
+        )}
       </tbody>
     </table>
   );
