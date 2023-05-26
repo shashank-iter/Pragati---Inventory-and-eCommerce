@@ -80,6 +80,7 @@ export function Profile() {
     businessWebsite: formData.businessWebsite,
     gstNumber: formData.gstNumber,
     cinNumber: formData.cinNumber,
+    razorpayButtonId: formData.razorpayButtonId,
   };
 
   const handleSubmit = async (e) => {
@@ -185,6 +186,14 @@ export function Profile() {
                 name="cinNumber"
                 onChange={handleChange}
                 value={formData.cinNumber}
+              />
+              <Input
+                className=""
+                size="md"
+                label="Razorpay Button ID"
+                name="razorpayButtonId"
+                onChange={handleChange}
+                value={formData.razorpayButtonId}
               />
             </div>
             <div className="flex flex-col gap-4">
