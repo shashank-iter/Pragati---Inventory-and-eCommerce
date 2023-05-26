@@ -19,7 +19,12 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import EditCustomerOrder from "./modals/editCustomerOrder";
 import supabase from "../auth/supabaseClient";
-import { data } from "autoprefixer";
+
+import { uid } from "uid";
+import { faker } from "@faker-js/faker";
+
+// import order invoice modal
+import OrderInvoiceModal from "@/components/ordersPage/OrderInvoiceModal";
 
 const Orders = () => {
   useEffect(() => {
@@ -35,13 +40,46 @@ const Orders = () => {
       .select("*")
       .ilike("shopID", `%${Cookies.get("email").split("@")[0]}%`);
 
-    console.log(customer_orders);
     setCustomerData(customer_orders);
   }
 
   useEffect(() => {
     fetchOrderDetails();
   }, []);
+
+  // invoice component functions
+  const [isOpen, setIsOpen] = useState(false);
+  // default discount rate of 10%
+  const [discountRate, setDiscountRate] = useState(10);
+  // default tax rate of 5%
+  const [tax, setTax] = useState(5);
+
+  // state to show in invoice
+  const [items, setItems] = useState([]);
+
+  const [invoiceData, setInvoiceData] = useState({});
+
+  // calculate subtotal
+  const subTotal = items.reduce((prev, curr) => {
+    if (curr.orderName.trim().length > 0)
+      return prev + Number(curr.orderValue * Math.floor(curr.qty));
+    else return prev;
+  }, 0);
+  const taxRate = (tax * subTotal) / 100;
+  const discountValue = (discountRate * subTotal) / 100;
+  const total = subTotal - discountValue + taxRate;
+
+  const addNextInvoiceHandler = () => {
+    setInvoiceNumber((prevNumber) => incrementString(prevNumber));
+    setItems([
+      {
+        id: uid(6),
+        name: "",
+        qty: 1,
+        price: "1.00",
+      },
+    ]);
+  };
 
   return (
     <>
@@ -76,6 +114,7 @@ const Orders = () => {
                     "Payment Status",
                     "Order Status",
                     "Edit Order",
+                    "Invoice",
                   ].map((el) => (
                     <th
                       key={el}
@@ -96,10 +135,7 @@ const Orders = () => {
                   const className = `py-3 px-5 `;
 
                   return (
-                    <tr
-                      key={item.id}
-                      // onClick={() => alert(item.orderData.productName)}
-                    >
+                    <tr key={item.id}>
                       <td className="py-3 px-5 text-left">
                         <Typography className="text-xs font-normal text-blue-gray-500">
                           {item?.orderData?.orderId}
@@ -126,7 +162,6 @@ const Orders = () => {
                         </Typography>
                       </td>
                       <td className="py-3 px-5 text-left">
-                        {/* <EditProduct productData={item} /> */}
                         <Typography className="text-sm font-semibold">
                           {item.orderData.orderValue}
                         </Typography>
@@ -149,6 +184,51 @@ const Orders = () => {
                       </td>
                       <td className="py-3 px-5 text-left">
                         <EditCustomerOrder customerdata={item} />
+                      </td>
+                      <td className="py-3 px-5 text-left">
+                        <Button
+                          variant="filled"
+                          color="green"
+                          onClick={() => {
+                            setIsOpen(true);
+
+                            // set the items for the modal
+                            setItems([
+                              {
+                                orderName: item.orderData.orderName,
+                                orderId: item?.orderData?.orderId,
+                                orderValue: item.orderData.orderValue,
+                                qty: 1,
+                              },
+                            ]);
+                          }}
+                        >
+                          Show Invoice
+                        </Button>
+
+                        {/* order invoice modal */}
+                        <OrderInvoiceModal
+                          isOpen={isOpen}
+                          setIsOpen={setIsOpen}
+                          // set the invoice data for the modal
+                          invoiceInfo={{
+                            orderName: item.orderData.orderName,
+                            orderId: item?.orderData?.orderId,
+                            orderValue: item.orderData.orderValue,
+                            customerName: item.orderData.customerName,
+                            customerAddress: item.orderData.customerAddress,
+                            customerPhone: item.orderData.customerPhone,
+                            customerEmail: item.orderData.customerEmail,
+
+                            // calculative values
+                            taxRate: taxRate,
+                            discountRate: discountValue,
+                            subtotal: subTotal,
+                            total,
+                          }}
+                          items={items}
+                          onAddNextInvoice={addNextInvoiceHandler}
+                        />
                       </td>
                     </tr>
                   );
