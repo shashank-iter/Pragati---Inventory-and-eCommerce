@@ -132,19 +132,29 @@ const Orders = () => {
                         </Typography>
                       </td>
                       <td className="py-3 px-5 text-left">
-                        <Typography className="text-sm font-semibold">
-                          {item.paymentCompleted === true
+                        <Typography
+                          className={`text-sm font-semibold ${
+                            item.paymentCompleted === "true"
+                              ? "text-green-500"
+                              : "text-amber-600"
+                          }`}
+                        >
+                          {item.paymentCompleted === "true"
                             ? "Completed"
                             : "Pending"}
                         </Typography>
                       </td>
                       <td className="py-3 px-5 text-left">
-                        <Typography className="text-sm font-semibold">
-                          <Typography className="text-sm font-semibold">
-                            {item.paymentCompleted === true
-                              ? "Completed"
-                              : "Pending"}
-                          </Typography>
+                        <Typography
+                          className={`text-sm font-semibold ${
+                            item.orderCompleted === "true"
+                              ? "text-green-500"
+                              : "text-amber-600"
+                          }`}
+                        >
+                          {item.orderCompleted === "true"
+                            ? "Completed"
+                            : "Pending"}
                         </Typography>
                       </td>
                       <td className="py-3 px-5 text-left">
