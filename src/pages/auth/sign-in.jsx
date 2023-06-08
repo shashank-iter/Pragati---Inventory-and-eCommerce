@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import supabase from "./supabaseClient";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Cookies from "js-cookie";
 export function SignIn() {

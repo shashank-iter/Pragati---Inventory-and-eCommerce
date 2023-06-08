@@ -13,11 +13,9 @@ import {
 import {
   Home,
   Profile,
-  Tables,
   Notifications,
   Product,
   Vendor,
-  Invoices,
   Orders,
   PaymentReceived,
 } from "@/pages/dashboard";
@@ -45,12 +43,6 @@ export const routes = [
         element: <Profile />,
       },
       {
-        icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
-        element: <Tables />,
-      },
-      {
         icon: <BellIcon {...icon} />,
         name: "notifications",
         path: "/notifications",
@@ -67,12 +59,6 @@ export const routes = [
         name: "vendor",
         path: "/vendor",
         element: <Vendor />,
-      },
-      {
-        icon: <DocumentTextIcon {...icon} />,
-        name: "invoices",
-        path: "/invoices",
-        element: <Invoices />,
       },
       {
         icon: <ClipboardDocumentListIcon {...icon} />,

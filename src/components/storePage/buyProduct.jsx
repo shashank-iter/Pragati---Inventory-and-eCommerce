@@ -12,9 +12,7 @@ import supabase from "@/pages/auth/supabaseClient";
 import Cookies from "js-cookie";
 import swal from "sweetalert";
 import { uid } from "uid";
-import { th } from "date-fns/locale";
 import PayButton from "@/layouts/payButton";
-import { set } from "date-fns";
 
 export default function BuyProduct({ product: productData }) {
   // console.log(productData);

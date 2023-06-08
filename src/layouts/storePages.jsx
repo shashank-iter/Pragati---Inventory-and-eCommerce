@@ -1,5 +1,4 @@
-import { Routes, Route, useParams } from "react-router-dom";
-import routes from "@/routes";
+import { useParams } from "react-router-dom";
 import { Navbar, Footer } from "@/widgets/layout";
 import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import Cookies from "js-cookie";
