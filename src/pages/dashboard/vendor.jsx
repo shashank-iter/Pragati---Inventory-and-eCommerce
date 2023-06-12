@@ -191,10 +191,10 @@ const Vendor = () => {
             <AddVendor />
             <AddOrders />
             {/* settings button */}
-            <Cog6ToothIcon
+            {/* <Cog6ToothIcon
               type="button"
               className="h-8 w-8 cursor-pointer text-white hover:text-white/70"
-            />
+            /> */}
           </div>
         </CardHeader>
         <CardBody className="overflow-x-auto px-0 pt-0 pb-2">

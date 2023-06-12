@@ -87,7 +87,7 @@ const Orders = () => {
             </div>
             <div className="flex  w-1/2 items-center justify-end">
               {/* <AddProduct></AddProduct> */}
-              <Cog6ToothIcon className="ml-4 h-8 w-8 text-white" />
+              {/* <Cog6ToothIcon className="ml-4 h-8 w-8 text-white" /> */}
             </div>
           </CardHeader>
           <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
