@@ -60,7 +60,7 @@ export function Navbar({ brandName, routes, action }) {
         <IconButton
           variant="text"
           size="sm"
-          className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+          className="ml-auto text-inherit focus:bg-transparent hover:bg-transparent active:bg-transparent lg:hidden"
           onClick={() => setOpenNav(!openNav)}
         >
           {openNav ? (
@@ -84,16 +84,7 @@ export function Navbar({ brandName, routes, action }) {
 
 Navbar.defaultProps = {
   brandName: "Pragati",
-  action: (
-    <a
-      href="https://www.creative-tim.com/product/material-tailwind-dashboard-react"
-      target="_blank"
-    >
-      <Button variant="gradient" size="sm" fullWidth>
-        free download
-      </Button>
-    </a>
-  ),
+  action: <a href="#" target=""></a>,
 };
 
 Navbar.propTypes = {
