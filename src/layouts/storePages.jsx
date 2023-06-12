@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import supabase from "../pages/auth/supabaseClient";
 import BuyProduct from "@/components/storePage/buyProduct";
-
+import { Typography } from "@material-tailwind/react";
 export const StorePages = () => {
   // array of routes
   const imgBaseUrl =
@@ -40,14 +40,41 @@ export const StorePages = () => {
   useEffect(() => {
     getProducts();
   }, []);
-
+  const [businessName, setBusinessName] = useState([]);
+  async function getStoreName() {
+    try {
+      let { data, error } = await supabase
+        .from("profiles")
+        .select("profileData")
+        .ilike("email", `%${Cookies.get("key")}%`);
+      if (error) throw error;
+      else {
+        // console.log(data);
+        setBusinessName(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    getStoreName();
+  }, []);
   return (
     <div className="min-h-screen px-5">
       <div className="container relative z-40 mx-auto">
         <Navbar routes={navbarRoutes} />
       </div>
 
-      <div className=" py-10 text-center"> E-Stores powered by Pragati </div>
+      <div className=" py-10 text-center">
+        <Typography variant="h3" color="black">
+          {businessName.map((name) => (
+            <div key={name.profileData.id}>{name.profileData.businessName}</div>
+          ))}
+        </Typography>
+        <div className="font-thin text-gray-500">
+          powered by <span className="text-black">Pragati</span>
+        </div>
+      </div>
       <div className="bg-white">
         <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
           <h2 className="sr-only">Products</h2>
