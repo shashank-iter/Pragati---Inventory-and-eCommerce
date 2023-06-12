@@ -16,7 +16,6 @@ import {
   Notifications,
   Product,
   Vendor,
-  Invoices,
   Orders,
   PaymentReceived,
 } from "@/pages/dashboard";
@@ -60,12 +59,6 @@ export const routes = [
         name: "vendor",
         path: "/vendor",
         element: <Vendor />,
-      },
-      {
-        icon: <DocumentTextIcon {...icon} />,
-        name: "invoices",
-        path: "/invoices",
-        element: <Invoices />,
       },
       {
         icon: <ClipboardDocumentListIcon {...icon} />,

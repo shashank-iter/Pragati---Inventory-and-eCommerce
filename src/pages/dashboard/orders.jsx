@@ -3,25 +3,15 @@ import {
   CardHeader,
   CardBody,
   Typography,
-  Avatar,
-  Chip,
-  Tooltip,
-  Progress,
   Button,
 } from "@material-tailwind/react";
-import {
-  EllipsisVerticalIcon,
-  TrashIcon,
-  PencilSquareIcon,
-  Cog6ToothIcon,
-} from "@heroicons/react/24/outline";
-import React, { useEffect, useState } from "react";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import EditCustomerOrder from "./modals/editCustomerOrder";
 import supabase from "../auth/supabaseClient";
 
 import { uid } from "uid";
-import { faker } from "@faker-js/faker";
 
 // import order invoice modal
 import OrderInvoiceModal from "@/components/ordersPage/OrderInvoiceModal";

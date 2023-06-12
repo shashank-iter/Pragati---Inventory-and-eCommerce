@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import supabase from "../auth/supabaseClient";
 import {
@@ -6,23 +6,13 @@ import {
   CardHeader,
   CardBody,
   Typography,
-  Avatar,
-  Chip,
-  Tooltip,
-  Progress,
-  Button,
   Tabs,
   TabsHeader,
   TabsBody,
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
-import {
-  EllipsisVerticalIcon,
-  TrashIcon,
-  PencilSquareIcon,
-  Cog6ToothIcon,
-} from "@heroicons/react/24/outline";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import AddVendor from "./modals/addVendor";
 import AddOrders from "./modals/addOrders";
 

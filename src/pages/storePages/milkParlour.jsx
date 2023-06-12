@@ -1,8 +1,6 @@
 import Cookies from "js-cookie";
-import React from "react";
 import supabase from "../auth/supabaseClient";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
 
 // const products = [
 //   {

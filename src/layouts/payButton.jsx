@@ -1,7 +1,5 @@
-import { set } from "date-fns";
 import Cookies from "js-cookie";
-import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function PayButton() {
   useEffect(() => {
