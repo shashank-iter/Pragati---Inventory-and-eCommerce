@@ -148,31 +148,36 @@ export function Configurator() {
           <hr />
           <div className="flex items-center justify-between py-5">
             <Typography variant="h6" color="blue-gray">
-              Developers Contact
+              Developer's Contact
             </Typography>
           </div>
-          <div className="flex items-center justify-between py-5">
-            <Typography variant="h6" color="blue-gray">
-              Shashank Pandey
-            </Typography>
-            <img
-              src="https://avatars.githubusercontent.com/u/102979508?s=96&v=4"
-              className="h-10 w-10 rounded-full"
-            />
-          </div>
-          <div className="flex items-center justify-between py-5">
-            <Typography variant="h6" color="blue-gray">
-              Partha Priyadarshi Das
-            </Typography>
-            <img
-              src="https://avatars.githubusercontent.com/u/66919291?v=4"
-              className="h-10 w-10 rounded-full"
-            />
-          </div>
+          <a href="https://bento.me/shashankpandey" target="_blank">
+            <div className="flex items-center justify-between py-5">
+              <Typography variant="h6" color="blue-gray">
+                Shashank Pandey
+              </Typography>
+              <img
+                src="https://avatars.githubusercontent.com/u/102979508?s=96&v=4"
+                className="h-10 w-10 rounded-full"
+              />
+            </div>
+          </a>
+          <a href="https://bento.me/partha" target="_blank">
+            <div className="flex items-center justify-between py-5">
+              <Typography variant="h6" color="blue-gray">
+                Partha Priyadarshi Das
+              </Typography>
+              <img
+                src="https://avatars.githubusercontent.com/u/66919291?v=4"
+                className="h-10 w-10 rounded-full"
+              />
+            </div>
+          </a>
         </div>
         <div className="absolute bottom-5">
           <Typography variant="h6" color="blue-gray">
-            Engineered with ❤️ at Skillvalley
+            Engineered with ❤️ at
+            <a href="https://skillvalley.in/"> Skillvalley</a>
           </Typography>
         </div>
       </div>
