@@ -13,7 +13,6 @@ import {
 import {
   Home,
   Profile,
-  Tables,
   Notifications,
   Product,
   Vendor,
@@ -43,12 +42,6 @@ export const routes = [
         name: "profile",
         path: "/profile",
         element: <Profile />,
-      },
-      {
-        icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
-        element: <Tables />,
       },
       {
         icon: <BellIcon {...icon} />,
