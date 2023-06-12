@@ -75,24 +75,24 @@ export const routes = [
       // },
     ],
   },
-  // {
-  //   title: "auth pages",
-  //   layout: "auth",
-  //   pages: [
-  //     {
-  //       icon: <ArrowRightOnRectangleIcon {...icon} />,
-  //       name: "sign in",
-  //       path: "/sign-in",
-  //       element: <SignIn />,
-  //     },
-  //     {
-  //       icon: <UserPlusIcon {...icon} />,
-  //       name: "sign up",
-  //       path: "/sign-up",
-  //       element: <SignUp />,
-  //     },
-  //   ],
-  // },
+  {
+    title: "auth pages",
+    layout: "auth",
+    pages: [
+      {
+        icon: <ArrowRightOnRectangleIcon {...icon} />,
+        name: "sign in",
+        path: "/sign-in",
+        element: <SignIn />,
+      },
+      {
+        icon: <UserPlusIcon {...icon} />,
+        name: "sign up",
+        path: "/sign-up",
+        element: <SignUp />,
+      },
+    ],
+  },
   // store pages that'll be publicly available
   {
     title: "store pages",
@@ -101,8 +101,7 @@ export const routes = [
       {
         icon: <InboxArrowDownIcon {...icon} />,
         name: "Visit Store",
-        path: `/${Cookies.get("email").split("@")[0]}`,
-        element: <StorePages />,
+        path: `/${Cookies.get("email") && Cookies.get("email").split("@")[0]}`,
       },
     ],
   },
