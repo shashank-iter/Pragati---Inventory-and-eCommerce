@@ -4,25 +4,13 @@ import {
   CardBody,
   Typography,
   Avatar,
-  Chip,
-  Tooltip,
-  Progress,
-  Button,
 } from "@material-tailwind/react";
-import {
-  EllipsisVerticalIcon,
-  TrashIcon,
-  PencilSquareIcon,
-  Cog6ToothIcon,
-} from "@heroicons/react/24/outline";
-import { authorsTableData, projectsTableData } from "@/data";
+import { TrashIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 import EditProduct from "./modals/editProduct";
 import AddProduct from "./modals/addProduct";
-import ChangeProduct from "./modals/changeProduct";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import supabase from "../auth/supabaseClient";
-import { data } from "autoprefixer";
 import { useState } from "react";
 
 export function Product() {
