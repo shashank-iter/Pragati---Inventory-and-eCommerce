@@ -20,7 +20,8 @@ import {
   PaymentReceived,
 } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
-import { MilkParlour } from "@/pages/storePages";
+import { StorePages } from "./layouts";
+import Cookies from "js-cookie";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -42,12 +43,12 @@ export const routes = [
         path: "/profile",
         element: <Profile />,
       },
-      {
-        icon: <BellIcon {...icon} />,
-        name: "notifications",
-        path: "/notifications",
-        element: <Notifications />,
-      },
+      // {
+      //   icon: <BellIcon {...icon} />,
+      //   name: "notifications",
+      //   path: "/notifications",
+      //   element: <Notifications />,
+      // },
       {
         icon: <TableCellsIcon {...icon} />,
         name: "product",
@@ -66,32 +67,32 @@ export const routes = [
         path: "/orders",
         element: <Orders />,
       },
-      {
-        icon: <InboxArrowDownIcon {...icon} />,
-        name: "payment Received",
-        path: "/payment received",
-        element: <PaymentReceived />,
-      },
+      // {
+      //   icon: <InboxArrowDownIcon {...icon} />,
+      //   name: "payment Received",
+      //   path: "/payment received",
+      //   element: <PaymentReceived />,
+      // },
     ],
   },
-  {
-    title: "auth pages",
-    layout: "auth",
-    pages: [
-      {
-        icon: <ArrowRightOnRectangleIcon {...icon} />,
-        name: "sign in",
-        path: "/sign-in",
-        element: <SignIn />,
-      },
-      {
-        icon: <UserPlusIcon {...icon} />,
-        name: "sign up",
-        path: "/sign-up",
-        element: <SignUp />,
-      },
-    ],
-  },
+  // {
+  //   title: "auth pages",
+  //   layout: "auth",
+  //   pages: [
+  //     {
+  //       icon: <ArrowRightOnRectangleIcon {...icon} />,
+  //       name: "sign in",
+  //       path: "/sign-in",
+  //       element: <SignIn />,
+  //     },
+  //     {
+  //       icon: <UserPlusIcon {...icon} />,
+  //       name: "sign up",
+  //       path: "/sign-up",
+  //       element: <SignUp />,
+  //     },
+  //   ],
+  // },
   // store pages that'll be publicly available
   {
     title: "store pages",
@@ -99,9 +100,9 @@ export const routes = [
     pages: [
       {
         icon: <InboxArrowDownIcon {...icon} />,
-        name: "milkParlour",
-        path: "/milkParlour",
-        element: <MilkParlour />,
+        name: "Visit Store",
+        path: `/${Cookies.get("email").split("@")[0]}`,
+        element: <StorePages />,
       },
     ],
   },
