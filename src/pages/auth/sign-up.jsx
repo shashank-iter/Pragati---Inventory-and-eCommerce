@@ -11,6 +11,7 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import supabase from "./supabaseClient";
+import swal from "sweetalert";
 
 export function SignUp() {
   // Initializing formData state with name, email and password fields
@@ -36,7 +37,13 @@ export function SignUp() {
         },
       });
       // Alerting the user's role
-      alert(data.user.role);
+      // alert(data.user.role);
+      swal({
+        title: "Success",
+        text: "You have successfully signed up. We have sent you a verification email. Please verify your email and then login.",
+        icon: "success",
+        button: "Ok",
+      });
       console.log(data, error);
     } catch (error) {
       // Alerting the error message
