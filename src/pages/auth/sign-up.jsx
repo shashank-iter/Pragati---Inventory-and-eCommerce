@@ -39,7 +39,7 @@ export function SignUp() {
       // Alerting the user's role
       // alert(data.user.role);
       swal({
-        title: "Success",
+        title: "You're all set!",
         text: "You have successfully signed up. We have sent you a verification email. Please verify your email and then login.",
         icon: "success",
         button: "Ok",
